@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import './Table.css';
 import Player from '../Player';
+const Hand = require('pokersolver').Hand;
 
 class Table extends Component {
     constructor(props) {
         super(props);
         const sbPlayer = 0;
-        props.table.players.forEach((player, index) => {
-            player.position = this.givePosition(index, sbPlayer, props.table.players.length)
+        const players = [...props.players];
+        players.forEach((player, index) => {
+            player.tableData.position = this.givePosition(index, sbPlayer, props.players.length);
+            player.tableData.round = props.round;
+            player.tableData.playersCnt = props.playersCnt;
         });
+        props.updatePlayers(players);
         this.state = {
             sbPlayer,
             update: props.update,
-            table: props.table,
             activePosition: 0,
-            pot: 0,
+            firstBetPosition: undefined,
+            pot: Array(players.length).fill(0),
             deck: [],
             board: []
         }
@@ -45,6 +50,9 @@ class Table extends Component {
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.update === true && nextProps.round) {
+            const {tableNr, updateTable} = this.props;
+            const updating = true;
+            updateTable(tableNr, updating);
             this.handleTableUpdate(nextProps.round);
         }
     }
@@ -55,42 +63,35 @@ class Table extends Component {
 
     takeBlinds(round) {
         return new Promise((resolve, reject) => {
-            const table = {...this.state.table};
-            let pot = this.state.pot;
-            table.players.forEach(player => {
+            const players = [...this.props.players];
+            const pot = [...this.state.pot];
+            players.forEach((player, index) => {
                 if (round.ante) {
                     const ante = this.takeAmount(player.stack, round.ante);
                     player.stack -= ante;
-                    pot += ante;
+                    pot[index] += ante;
                 }
-                if (player.position === 'SB') {
+                if (player.tableData.position === 'SB') {
                     const SB = this.takeAmount(player.stack, round.SB);
                     player.stack -= SB;
-                    pot += SB;
+                    pot[index] += SB;
                 }
-                if (player.position === 'BB') {
+                if (player.tableData.position === 'BB') {
                     const BB = this.takeAmount(player.stack, round.BB);
                     player.stack -= BB;
-                    pot += BB;
+                    pot[index] += BB;;
                 }
             });
-            this.setState({table, pot}, () => {resolve()});
+            this.props.updatePlayers(players);
+            this.setState({pot}, () => {
+                resolve()
+            });
         })
-    }
-
-    takeCardFromDeck() {
-        return new Promise((resolve, reject) => {
-            const deck = [...this.state.deck];
-            const cardNo = Math.floor(Math.random() * this.state.deck.length);
-            const card = deck[cardNo];
-            deck.splice(cardNo, 1);
-            this.setState({deck}, () => {resolve(card)})
-        });
     }
 
     giveCards() {
         return new Promise((resolve, reject) => {
-            const table = {...this.state.table};
+            const players = [...this.props.players];
 
             const cardSuits = ['s', 'c', 'h', 'd']
             const cardValues = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
@@ -112,10 +113,10 @@ class Table extends Component {
             });
 
             // add cards to players
-            table.players.forEach(player => {
-                player.hand = [];
+            players.forEach(player => {
+                player.tableData.hand = [];
                 for(let i =0; i<2; i++) {
-                    player.hand.push(takeCardFromDeck());
+                    player.tableData.hand.push(takeCardFromDeck());
                 }
             });
 
@@ -123,13 +124,14 @@ class Table extends Component {
             for(let i =0; i<5; i++) {
                 board.push(takeCardFromDeck());
             }
-            this.setState({deck, table, board}, () => {resolve})
+            this.props.updatePlayers(players);
+            this.setState({deck, board}, () => {resolve()})
         });
     }
 
     playerTurn() {
-        const { table, activePosition } = this.state;
-        const { players } = this.state.table;
+        const players = [...this.props.players]
+        const {firstBetPosition, pot, activePosition} = this.state;
         const positionTurnsMap = {
             '9': ['UTG', 'UTG+1', 'UTG+2', 'MP1', 'MP2', 'C', 'B', 'SB', 'BB'], 
             '8': ['UTG+1', 'UTG+2', 'MP1', 'MP2', 'C', 'B', 'SB', 'BB'], 
@@ -141,29 +143,113 @@ class Table extends Component {
             '2': ['SB', 'BB']
         }
         const positionTurns = positionTurnsMap[players.length.toString()];
-        const activePlayer = players.find(player => player.position === positionTurns[activePosition]);
+        const activePlayer = players.find(player => player.tableData.position === positionTurns[activePosition]);
         activePlayer.timeToAct = true;
+        activePlayer.tableData.firstBetPosition = firstBetPosition;
+        activePlayer.tableData.pot = pot;
+        this.props.updatePlayers(players);
     }
 
-    updatePlayer(player) {
+    distributePot() {
+        const players = [...this.props.players];
+        let hands = []; 
+        let handNames = [];
+        const board = [...this.state.board];
+        const pot = [...this.state.pot];
+        function translateCard(card){
+            const mapCards = {'10': 'T', '11': 'J', '12': 'Q', '13': 'K', '14': 'A'};
+            return parseInt(card[0]) > 9 ? mapCards[card[0]] + card[1] : card[0] + card[1];
+        }
+        players.forEach((player, index) => {
+            if(player.inGame) {
+                const hand = Hand.solve([...player.tableData.hand, ...this.state.board].map(card => translateCard(card)));
+                hand.index = index;
+                hands.push(hand);
+            }
+        });
+        const places = [];
+        while (hands.length) {
+            places.push(Hand.winners(hands).map(winner => winner.index));
+            handNames.push(Hand.winners(hands).map(winner => winner.descr));
+            places[places.length - 1].forEach(place => {
+                hands = hands.filter(hand => hand.index != place);
+            });
+        }
+        places.forEach((place) => {
+            let betAmounts = [];
+            let winnerPlayers = [];
+            place.forEach((playerIndex) => {
+                betAmounts.push(pot[playerIndex]);
+                winnerPlayers.push(players[playerIndex]);
+            });
+            for(let i = 0; i < pot.length; i++) {
+                let potPieces = winnerPlayers.length;
+                winnerPlayers.forEach((winner, index) => {
+                    const piece = pot[i] / potPieces < betAmounts[index] ? pot[i] / potPieces : betAmounts[index];
+                    winner.stack += piece;
+                    pot[i] -= piece;
+                    potPieces -= 1;
+                });
+            }
+        });
+        this.props.updatePlayers(players);
+    }
 
+    setNextPlayer(betAmount, playerIndex) {
+        let {firstBetPosition, pot, activePosition} = this.state;
+        const {tableNr, updateTable, updatePlayers} = this.props;
+        const players = [...this.props.players];
+        if (betAmount && !firstBetPosition) {
+            firstBetPosition = activePosition;
+        }
+        players[playerIndex]['stack'] -= betAmount;
+        players[playerIndex]['timeToAct'] = false;
+        players[playerIndex]['inGame'] = !!betAmount;
+        updatePlayers(players);
+        pot[playerIndex] += betAmount;
+        activePosition += 1;
+        
+        if (activePosition >= players.length) {
+            activePosition = 0
+            updateTable(tableNr, false);
+            this.setState({firstBetPosition, pot, activePosition}, () => {
+                this.distributePot();
+            })
+        } else {
+            this.setState({firstBetPosition, pot, activePosition}, () => {
+                this.playerTurn();
+            })
+        }
+        
     }
 
     async handleTableUpdate(round) {
+        const players = [...this.props.players];
+        const { sbPlayer } = this.state;
+        players.forEach((player, index) => {
+            player.tableData.position = this.givePosition(index, sbPlayer, players.length);
+            player.tableData.round = this.props.round;
+            player.tableData.playersCnt = players.length;
+        });
+        this.props.updatePlayers(players);
         await this.takeBlinds(round);
         await this.giveCards();
         this.playerTurn();
-        this.props.updateTable(this.state.table);
     }
 
     render() {
-        const { players } = this.state.table;
-        const { table, pot, board } = this.state;
+        const { players } = this.props;
+        const { pot, board } = this.state;
         return (
             <div className="table">
-                <p>POT: {pot}, BOARD: {board.reduce((prev, cur) => prev + ' ' + cur[0] + cur[1], '')}</p>
+                <p>POT: {pot.reduce((prev, cur) => prev+cur)}, BOARD: {board.reduce((prev, cur) => prev + ' ' + cur[0] + cur[1], '')}</p>
                 {players.map((player, index) => (
-                    <Player key={`player-${index}`} player={player} updatePlayer={this.updatePlayer.bind(this)}/>
+                    <Player 
+                        key={`player-${index}`} 
+                        player={player}
+                        index={index} 
+                        setNextPlayer={this.setNextPlayer.bind(this)}
+                    />
                 ))}
             </div>
         );

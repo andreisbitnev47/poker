@@ -1,8 +1,29 @@
 import React, { Component } from 'react';
 
 class Player extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.player && nextProps.player.timeToAct) {
+            this.update(nextProps.player.tableData);
+        }
+    }
+
+    update({hand, firstBetPosition, round, position, playersCnt, pot}) {
+        const { player, setNextPlayer, index } = this.props;
+        const action = Math.floor(Math.random() * 2);
+        setNextPlayer(player.stack * action, index);
+    }
+
     render() {
-        const { hand, name, brain, stack, position } = this.props.player;
+        const { name, brain, stack, timeToAct } = this.props.player;
+        const { 
+            hand,
+            firstBetPosition,
+            round,
+            position,
+            playersCnt,
+            pot
+        } = this.props.player.tableData;
 
         function translateCard(card){
             const mapCards = {'10': 'T', '11': 'J', '12': 'Q', '13': 'K', '14': 'A'};
@@ -25,11 +46,7 @@ class Player extends Component {
             }
             return simpleHand.map(card => translateCard(card)).reduce((acc, curVal) => acc + curVal.toString());
         }
-    
-        function update() {
-    
-        }
-    
+
         const simpleHand = getSimpleHand(hand);
     
         return (

@@ -11,24 +11,37 @@ class Mtt extends Component {
             const level = index === dqnNr ? 0 : `${Math.floor(Math.random() * 6) + 1}`;
             const brain = level === 0 ? 'DQN' : `BOT-${level}`;
             return {
+                index,
                 name: `player-${index}`,
                 stack: startingChips,
-                position: undefined,
+                inGame: false,
                 status: 'active',
-                table: undefined,
                 timeToAct: false,
+                tableData: {
+                    hand: undefined,
+                    firstBetPosition: undefined,
+                    round: undefined,
+                    position: undefined,
+                    playersCnt: null,
+                    pot: null,
+                },
                 brain,
                 level,
             }
         });
+        const activePlayers = players;
+        const finishedPlayers = [];
         const tables = [...Array(playerCnt / playersPerTable)].map((_, tableNr) => (
             {
                 tableNr,
+                updating: false,
                 players: [...Array(playersPerTable)].map((_, index) => players[tableNr * playersPerTable + index])
             }
         ));
         this.state = {
             players,
+            activePlayers,
+            finishedPlayers,
             tables,
             update: false,
             gameCnt: 0,
@@ -43,25 +56,26 @@ class Mtt extends Component {
             currentRound: undefined
         }
       }
-    // tables: [
-    //     {
-    //         pot: 300,
-    //         players: [
-    //             {
-    //                 name: 'asd',
-    //                 hand: [[11,'s'], [12, 's']],
-    //                 pot: '500',
-    //                 position: 'MP1',
-    //             }
-    //         ]
-    //     }
-    // ]
-    updateTable(table) {
+    updatePlayers(playersToUpdate) {
+        const players = [...this.state.players];
+        playersToUpdate.forEach(player => {
+            players[player.index] = player
+        });
+        this.setState({
+            players
+        })
+    }
+    updateTable(tableNr, updating) {
         const tables = [...this.state.tables];
-        tables[table.tableNr] = table;
+        let update = this.state.update;
+        if (updating) {
+            update = false;
+        }
+        tables[tableNr]['updating'] = updating;
+
         this.setState({
             tables,
-            update: false
+            update
         })
     }
     updateRounds() {
@@ -76,10 +90,9 @@ class Mtt extends Component {
         const round = {...this.state.roundsMap[0]};
         this.updateRounds();
         this.setState({
-            currentRound: round,
-            update: true
+            update: true,
+            currentRound: round
         });
-
     }
     render() {
         const {tables, update} = this.state;
@@ -89,11 +102,13 @@ class Mtt extends Component {
             <div className="tables">
                 {tables.map((table, index) => (
                     <Table 
-                        key={index} 
-                        table={table} 
+                        key={index}
+                        players={table.players}
                         tableNr={index}
                         update={update}
                         round={this.state.currentRound}
+                        playersCnt={this.state.activePlayers.length}
+                        updatePlayers={this.updatePlayers.bind(this)}
                         updateTable={this.updateTable.bind(this)}
                     />
                 ))}
