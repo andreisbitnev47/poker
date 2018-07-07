@@ -21,7 +21,9 @@ class Table extends Component {
             firstBetPosition: undefined,
             pot: Array(players.length).fill(0),
             deck: [],
-            board: []
+            board: [],
+            winners: [],
+            history: []
         }
     }
 
@@ -54,6 +56,9 @@ class Table extends Component {
             const updating = true;
             updateTable(tableNr, updating);
             this.handleTableUpdate(nextProps.round);
+        }
+        if(nextProps.resetTableData) {
+            this.resetTableData(nextProps.players);
         }
     }
 
@@ -152,6 +157,7 @@ class Table extends Component {
 
     distributePot() {
         const players = [...this.props.players];
+        const history = [...this.state.history];
         let hands = []; 
         let handNames = [];
         const board = [...this.state.board];
@@ -168,6 +174,14 @@ class Table extends Component {
             }
         });
         const places = [];
+        const winners = Hand.winners(hands);
+        const currentHand = {
+            playersStart: [...this.props.players].map(player => player.name + ' - ' + player.stack),
+            pot: [...this.state.pot],
+            board,
+            hands,
+            winners,
+        }
         while (hands.length) {
             places.push(Hand.winners(hands).map(winner => winner.index));
             handNames.push(Hand.winners(hands).map(winner => winner.descr));
@@ -176,22 +190,34 @@ class Table extends Component {
             });
         }
         places.forEach((place) => {
-            let betAmounts = [];
-            let winnerPlayers = [];
-            place.forEach((playerIndex) => {
-                betAmounts.push(pot[playerIndex]);
-                winnerPlayers.push(players[playerIndex]);
-            });
+            place.sort((a, b) => pot[a] - pot[b]);
             for(let i = 0; i < pot.length; i++) {
-                let potPieces = winnerPlayers.length;
-                winnerPlayers.forEach((winner, index) => {
-                    const piece = pot[i] / potPieces < betAmounts[index] ? pot[i] / potPieces : betAmounts[index];
-                    winner.stack += piece;
-                    pot[i] -= piece;
-                    potPieces -= 1;
-                });
+                // give back pot to winnerPlayer
+                if(place.includes(i)) {
+                    players[i].stack += pot[i]
+                } else {
+                    let potPieces = place.length;
+                    place.forEach((winnerIndex) => {
+                        // if potPiece is bigger than player bet, potPiece = player bet
+                        const piece = pot[i] / potPieces < pot[winnerIndex] ? pot[i] / potPieces : pot[winnerIndex];
+                        players[winnerIndex].stack += piece;
+                        pot[i] -= piece;
+                        potPieces -= 1;
+                    });
+                }
+            }
+            // set winnerPlayers potPieces to 0
+            place.forEach((winnerIndex) => {pot[winnerIndex] = 0});
+        });
+        // if some potPieces are not 0, return them
+        pot.forEach((potPiece, index) => {
+            if(potPiece > 0) {
+                players[index] += potPiece;
             }
         });
+        currentHand.playersEnd = [...players].map(player => player.name + ' - ' + player.stack);
+        history.push(currentHand);
+        this.setState({history});
         this.props.updatePlayers(players);
     }
 
@@ -205,6 +231,11 @@ class Table extends Component {
         players[playerIndex]['stack'] -= betAmount;
         players[playerIndex]['timeToAct'] = false;
         players[playerIndex]['inGame'] = !!betAmount;
+        // if player is BB, and everyone folded || BB is bigger than any other bet
+        if ((!firstBetPosition && !betAmount && activePosition === players.length - 1) || 
+            (firstBetPosition && !betAmount && !pot.find(playerBetAmount => playerBetAmount > pot[playerIndex])) ) {
+            players[playerIndex]['inGame'] = true;
+        } 
         updatePlayers(players);
         pot[playerIndex] += betAmount;
         activePosition += 1;
@@ -223,25 +254,32 @@ class Table extends Component {
         
     }
 
-    // resetTableData() {
-    //     this.setState({
-    //         sbPlayer,
-    //         update: props.update,
-    //         activePosition: 0,
-    //         firstBetPosition: undefined,
-    //         pot: Array(players.length).fill(0),
-    //         deck: [],
-    //         board: []
-    //     })
-    // }
+    resetTableData(players) {
+        if(players.length <= 1) {
+            return
+        }
+        let { sbPlayer } = this.state;
+        sbPlayer = sbPlayer < players.length ? sbPlayer + 1 : 0;
+        const pot = Array(players.length).fill(0);
+        players.forEach((player, index) => {
+            player.tableData.position = this.givePosition(index, sbPlayer, players.length);
+            player.tableData.playersCnt = players.length;
+            player.tableData.pot = pot;
+            player.tableData.firstBetPosition = undefined;
+            player.tableData.round = undefined;
+        });
+        this.setState({
+            pot,
+            sbPlayer,
+            firstBetPosition: undefined,
+        });
+        this.props.updatePlayers(players);
+    }
 
     async handleTableUpdate(round) {
         const players = [...this.props.players];
-        const { sbPlayer } = this.state;
         players.forEach((player, index) => {
-            player.tableData.position = this.givePosition(index, sbPlayer, players.length);
             player.tableData.round = this.props.round;
-            player.tableData.playersCnt = players.length;
         });
         this.props.updatePlayers(players);
         await this.takeBlinds(round);
@@ -251,10 +289,12 @@ class Table extends Component {
 
     render() {
         const { players } = this.props;
-        const { pot, board } = this.state;
+        const { pot, board, winners } = this.state;
         return (
             <div className="table">
                 <p>POT: {pot.reduce((prev, cur) => prev+cur)}, BOARD: {board.reduce((prev, cur) => prev + ' ' + cur[0] + cur[1], '')}</p>
+                {/* {winners.length ? <p>Winner: {winners[0].descr + ' - ' + winners.reduce((prev, next) => prev + ', ' + players[next.index].name, )}</p> : null} */}
+                <p>Money: {players.reduce((prev, next) => prev + next.stack, 0)}</p>
                 {players.map((player, index) => (
                     <Player 
                         key={`player-${index}`} 

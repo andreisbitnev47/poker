@@ -43,6 +43,7 @@ class Mtt extends Component {
             finishedPlayers,
             tables,
             update: false,
+            resetTableData: false,
             gameCnt: 0,
             roundsMap: [
                 {'BB': 50, 'SB': 25, 'ante': 10, 'games': 3},
@@ -50,7 +51,8 @@ class Mtt extends Component {
                 {'BB': 200, 'SB': 100, 'ante': 40, 'games': 4},
                 {'BB': 400, 'SB': 200, 'ante': 60, 'games': 5},
                 {'BB': 600, 'SB': 300, 'ante': 80, 'games': 6},
-                {'BB': 800, 'SB': 400, 'ante': 100, 'games': 7}
+                {'BB': 800, 'SB': 400, 'ante': 100, 'games': 12},
+                {'BB': 1000, 'SB': 500, 'ante': 120, 'games': 12},
             ],
             currentRound: undefined
         }
@@ -61,7 +63,8 @@ class Mtt extends Component {
             players[player.index] = player
         });
         this.setState({
-            players
+            players,
+            resetTableData: false,
         })
     }
     updateTable(tableNr, updating) {
@@ -149,7 +152,13 @@ class Mtt extends Component {
             table.players = table.players.filter(table => !!table);
         });
         this.setState({
-            tables
+            tables,
+            resetTableData: true,
+        }, () => {
+            // const activePlayers = this.state.players.reduce((prev, next) => next.stack > 0 ? prev + 1 : prev, 0);
+            // if(activePlayers > 1) {
+            //     this.nextRound();
+            // }
         })
     }
     updateRounds() {
@@ -169,17 +178,21 @@ class Mtt extends Component {
         });
     }
     render() {
-        const {tables, update} = this.state;
+        const {tables, update, resetTableData, players } = this.state;
         return (
         <div className="content">
             <button onClick={() => this.nextRound()}>Update</button>
+            {/* <button onClick={() => this.setState({resetTableData: true})}>Reset</button> */}
             <div className="tables">
+                <p>Money: {players.reduce((prev, next) => prev + next.stack, 0)}</p>
+                <p>Players: {players.reduce((prev, next) => next.stack > 0 ? prev + 1 : prev, 0)}</p>
                 {tables.map((table, index) => (
                     <Table 
                         key={index}
                         players={table.players}
                         tableNr={index}
                         update={update}
+                        resetTableData={resetTableData}
                         round={this.state.currentRound}
                         playersCnt={this.state.activePlayers.length}
                         updatePlayers={this.updatePlayers.bind(this)}
