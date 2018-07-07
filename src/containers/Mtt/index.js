@@ -129,22 +129,22 @@ class Mtt extends Component {
             }
         });
         // distribute all freeplayer between tables
-        let tableNr = 0;
-        while (freePlayers.length) {
-            if (tablePlayersMap[tableNr] < minPlayersPerTable || (
-                tablePlayersMap[tableNr] < maxPlayersPerTable && tablesWithMaxPlayers
-            )) {
-                let playerIndex = tables[tableNr].players.findIndex(player => !player);
-                playerIndex = playerIndex === -1 ? tables[tableNr].players.length : playerIndex;
-                tables[tableNr].players[playerIndex] = freePlayers[0];
-                freePlayers.splice(0, 1);
-                tablePlayersMap[tableNr] += 1;
-                if (tablePlayersMap[tableNr] >= maxPlayersPerTable) {
-                    tablesWithMaxPlayers--;
+        freePlayers.forEach(freePlayer => {
+            for (let i = 0; i < tables.length; i++) {
+                if (tablePlayersMap[i] < minPlayersPerTable || (
+                    tablePlayersMap[i] < maxPlayersPerTable && tablesWithMaxPlayers
+                )) {
+                    let playerIndex = tables[i].players.findIndex(player => !player);
+                    playerIndex = playerIndex === -1 ? tables[i].players.length : playerIndex;
+                    tables[i].players[playerIndex] = freePlayer;
+                    tablePlayersMap[i] += 1;
+                    if (tablePlayersMap[i] >= maxPlayersPerTable) {
+                        tablesWithMaxPlayers--;
+                    }
+                    break;
                 }
             }
-            tableNr = tableNr < tables.length - 1 ? tableNr + 1 : 0;
-        }
+        })
         tables.forEach((table) => {
             table.players = table.players.filter(table => !!table);
         });
