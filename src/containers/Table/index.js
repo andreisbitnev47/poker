@@ -211,9 +211,9 @@ class Table extends Component {
         
         if (activePosition >= players.length) {
             activePosition = 0
-            updateTable(tableNr, false);
             this.setState({firstBetPosition, pot, activePosition}, () => {
                 this.distributePot();
+                updateTable(tableNr, false);
             })
         } else {
             this.setState({firstBetPosition, pot, activePosition}, () => {
@@ -222,6 +222,18 @@ class Table extends Component {
         }
         
     }
+
+    // resetTableData() {
+    //     this.setState({
+    //         sbPlayer,
+    //         update: props.update,
+    //         activePosition: 0,
+    //         firstBetPosition: undefined,
+    //         pot: Array(players.length).fill(0),
+    //         deck: [],
+    //         board: []
+    //     })
+    // }
 
     async handleTableUpdate(round) {
         const players = [...this.props.players];

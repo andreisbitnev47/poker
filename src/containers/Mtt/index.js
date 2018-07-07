@@ -15,7 +15,6 @@ class Mtt extends Component {
                 name: `player-${index}`,
                 stack: startingChips,
                 inGame: false,
-                status: 'active',
                 timeToAct: false,
                 tableData: {
                     hand: undefined,
@@ -73,9 +72,84 @@ class Mtt extends Component {
         }
         tables[tableNr]['updating'] = updating;
 
+        const tablesUpdated = !tables.find(table => table.updating);
         this.setState({
             tables,
             update
+        }, () => {
+            if (tablesUpdated) {
+                this.rearrangePlayers();
+            }
+        })
+    }
+
+    rearrangePlayers() {
+        const tables = [...this.state.tables];
+        const { playersPerTable } = this.props;
+        let freePlayers = [];
+        tables.forEach((table) => {
+            table.players.forEach((player, playerIndex) => {
+                if (player.stack <= 0) {
+                    delete table.players[playerIndex]
+                }
+            })
+        });
+        const tablePlayersMap = tables.map(table => table.players.filter(player => !!player).length);
+        const activePlayers = tablePlayersMap.reduce((prev, next) => prev + next);
+        let tableCnt = tables.length;
+        for(let i = 1; i <= tables.length; i++) {
+            if(Math.ceil(activePlayers / i) <= playersPerTable) {
+                tableCnt = i;
+                break;
+            }
+        }
+        // remove last tables if there is too many
+        if (tables.length > tableCnt) {
+            for (let i = tables.length - tableCnt; i > 0; i--) {
+                freePlayers = [...freePlayers, ...tables[tables.length - 1].players];
+                tables.splice([tables.length - i], 1);
+                tablePlayersMap.splice([tablePlayersMap.length - i], 1)
+            }
+        }
+        freePlayers = freePlayers.filter(player => !!player);
+        const minPlayersPerTable = Math.floor(activePlayers / tableCnt);
+        const maxPlayersPerTable = Math.ceil(activePlayers / tableCnt);
+        let tablesWithMaxPlayers = activePlayers % tableCnt;
+        // take players from table if too many
+        tables.forEach((table, index) => {
+            if (tablePlayersMap[index] > minPlayersPerTable) {
+                let playersOverMin = tablePlayersMap[index] - minPlayersPerTable;
+                for (let i = table.players.length - 1; i >= 0; i--) {
+                    if (table.players[i] && playersOverMin) {
+                        freePlayers.push(table.players[i]);
+                        delete table.players[i];
+                        playersOverMin--;
+                    }
+                }
+            }
+        });
+        // distribute all freeplayer between tables
+        let tableNr = 0;
+        while (freePlayers.length) {
+            if (tablePlayersMap[tableNr] < minPlayersPerTable || (
+                tablePlayersMap[tableNr] < maxPlayersPerTable && tablesWithMaxPlayers
+            )) {
+                let playerIndex = tables[tableNr].players.findIndex(player => !player);
+                playerIndex = playerIndex === -1 ? tables[tableNr].players.length : playerIndex;
+                tables[tableNr].players[playerIndex] = freePlayers[0];
+                freePlayers.splice(0, 1);
+                tablePlayersMap[tableNr] += 1;
+                if (tablePlayersMap[tableNr] >= maxPlayersPerTable) {
+                    tablesWithMaxPlayers--;
+                }
+            }
+            tableNr = tableNr < tables.length - 1 ? tableNr + 1 : 0;
+        }
+        tables.forEach((table) => {
+            table.players = table.players.filter(table => !!table);
+        });
+        this.setState({
+            tables
         })
     }
     updateRounds() {
