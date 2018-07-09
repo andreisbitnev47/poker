@@ -27,6 +27,7 @@
 </head>
 <body>
     <button class="inc">+</button><button class="dec">-</button>
+    <script src="./chart1.js"></script>
     <script>
         let chart = {}
         let tables = {};
@@ -177,9 +178,7 @@
             $('#'+tableId+' .'+rowClass).append('<td class='+tdClass+'>' + text + '</td>');
         }
         function loadJson() {
-            $.getJSON('chart1.json', function(data) {
-                buildTable(data);
-            });
+          buildTable(chart1);
         }
         function updateCards(tableId, rowClass, tdClass, text){
             $('#'+tableId+' .'+rowClass+' .'+tdClass).text(text);

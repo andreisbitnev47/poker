@@ -1,12 +1,18 @@
 import chart0 from './chart0';
 import chart1 from './chart1';
+import chart2 from './chart2';
+import chart3 from './chart3';
+import chart4 from './chart4';
+import chart5 from './chart5';
+import chart6 from './chart6';
 
 // playerCnt, firstBetPosition, card1, card2, suit(1 - s, 0 - o), stackBBs, position
 
 export default class SimpleBot{
     constructor(aggression) {
-        this.aggression = aggression;
-        this.charts = [chart0, chart1];
+        this.aggression = aggression || 1;
+        const charts = [chart0, chart1, chart2, chart3, chart4, chart5, chart6];
+        this.charts = [charts[0], charts[aggression || 1]];
     }
     getSimpleHand(card1, card2, suitNr){
         const suits = ['o', 's'];
@@ -42,7 +48,7 @@ export default class SimpleBot{
                         return 1
                     }
                 }
-                return 0
+                return Math.round(Math.random() * 10) <= this.aggression ? 1 : 0;
             } else {
                 for (let i = 0; i < actionData['o']['++'].length; i++) {
                     const cards = actionData['o']['++'][i];
@@ -83,7 +89,7 @@ export default class SimpleBot{
                     }
                 }
             }
-            return 0;
+            return Math.round(Math.random() * 10) <= this.aggression ? 1 : 0;
         } else if (chartNr === 1) {
             const positionsMap = {
                 'UTG': 'E', 'UTG+1': 'E', 'UTG+2': 'E',

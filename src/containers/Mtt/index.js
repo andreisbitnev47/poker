@@ -39,6 +39,7 @@ class Mtt extends Component {
             }
         ));
         this.state = {
+            dqnNr,
             players,
             activePlayers,
             finishedPlayers,
@@ -133,22 +134,39 @@ class Mtt extends Component {
             }
         });
         // distribute all freeplayer between tables
-        freePlayers.forEach(freePlayer => {
-            for (let i = 0; i < tables.length; i++) {
-                if (tablePlayersMap[i] < minPlayersPerTable || (
-                    tablePlayersMap[i] < maxPlayersPerTable && tablesWithMaxPlayers
-                )) {
-                    let playerIndex = tables[i].players.findIndex(player => !player);
-                    playerIndex = playerIndex === -1 ? tables[i].players.length : playerIndex;
-                    tables[i].players[playerIndex] = freePlayer;
-                    tablePlayersMap[i] += 1;
-                    if (tablePlayersMap[i] >= maxPlayersPerTable) {
-                        tablesWithMaxPlayers--;
-                    }
-                    break;
+        while(freePlayers.length > 0) {
+          for (let i = 0; i < tables.length; i++) {
+            if (tablePlayersMap[i] < minPlayersPerTable || (
+                tablePlayersMap[i] < maxPlayersPerTable && tablesWithMaxPlayers
+            )) {
+                let playerIndex = tables[i].players.findIndex(player => !player);
+                playerIndex = playerIndex === -1 ? tables[i].players.length : playerIndex;
+                tables[i].players[playerIndex] = freePlayers[0];
+                freePlayers.splice(0, 1);
+                tablePlayersMap[i] += 1;
+                if (tablePlayersMap[i] >= maxPlayersPerTable) {
+                    tablesWithMaxPlayers--;
                 }
+                break;
             }
-        })
+          }
+        }
+        // freePlayers.forEach(freePlayer => {
+        //     for (let i = 0; i < tables.length; i++) {
+        //         if (tablePlayersMap[i] < minPlayersPerTable || (
+        //             tablePlayersMap[i] < maxPlayersPerTable && tablesWithMaxPlayers
+        //         )) {
+        //             let playerIndex = tables[i].players.findIndex(player => !player);
+        //             playerIndex = playerIndex === -1 ? tables[i].players.length : playerIndex;
+        //             tables[i].players[playerIndex] = freePlayer;
+        //             tablePlayersMap[i] += 1;
+        //             if (tablePlayersMap[i] >= maxPlayersPerTable) {
+        //                 tablesWithMaxPlayers--;
+        //             }
+        //             break;
+        //         }
+        //     }
+        // })
         tables.forEach((table) => {
             table.players = table.players.filter(table => !!table);
         });
@@ -156,10 +174,10 @@ class Mtt extends Component {
             tables,
             resetTableData: true,
         }, () => {
-            // const activePlayers = this.state.players.reduce((prev, next) => next.stack > 0 ? prev + 1 : prev, 0);
-            // if(activePlayers > 1) {
-            //     this.nextRound();
-            // }
+            const activePlayers = this.state.players.filter(player => player.stack > 0);
+            if(activePlayers.length > 1 && activePlayers.find(player => player.index === this.state.dqnNr)) {
+                this.nextRound();
+            }
         })
     }
     updateRounds() {

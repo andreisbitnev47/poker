@@ -4,7 +4,7 @@ import SimpleBot from '../../scripts/simpleBot';
 class Player extends Component {
     constructor(props) {
         super(props);
-        const bot = new SimpleBot(props.level);
+        const bot = new SimpleBot(props.player.level);
         this.state = {
             bot
         }
