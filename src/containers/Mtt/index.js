@@ -19,6 +19,7 @@ class Mtt extends Component {
                 tableData: {
                     hand: undefined,
                     firstBetPosition: undefined,
+                    firstBetPositionName: undefined,
                     round: undefined,
                     position: undefined,
                     playersCnt: null,

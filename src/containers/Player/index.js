@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import SimpleBot from '../../scripts/simpleBot';
 
 class Player extends Component {
+    constructor(props) {
+        super(props);
+        const bot = new SimpleBot(props.level);
+        this.state = {
+            bot
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.player && nextProps.player.timeToAct) {
@@ -8,10 +16,30 @@ class Player extends Component {
         }
     }
 
-    update({hand, firstBetPosition, round, position, playersCnt, pot}) {
+    update({hand, firstBetPosition, firstBetPositionName, round, position, playersCnt, pot}) {
         const { player, setNextPlayer, index } = this.props;
-        const action = Math.floor(Math.random() * 2);
+        // const action = Math.floor(Math.random() * 2);
+        const formattedHand = this.formatHand(hand)
+        const anteCoefficient = 0.67;
+        const stackBBs = this.props.player.stack / (round.BB + round.ante * playersCnt * anteCoefficient);
+        const action = this.state.bot.update(undefined, 
+            {firstBetPositionName,
+            position,
+            stackBBs,
+            card1: formattedHand[0], 
+            card2: formattedHand[1], 
+            suit: formattedHand[2]});
         setNextPlayer(player.stack * action, index);
+    }
+
+    formatHand(hand){
+        if(!hand) {
+            return undefined;
+        }
+        const firstCard = hand[0][0] > hand[1][0] ? hand[0][0] : hand[1][0];
+        const secondCard = hand[0][0] < hand[1][0] ? hand[0][0] : hand[1][0];
+        const sop = hand[0][1] === hand[1][1] ? 1 : 0;
+        return [firstCard, secondCard, sop];
     }
 
     render() {

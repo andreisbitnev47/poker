@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        table {
+            width: 100%; /* Ширина таблицы */
+            border: 4px double black; /* Рамка вокруг таблицы */
+            border-collapse: collapse; /* Отображать только одинарные линии */
+        }
+        th {
+            text-align: left; /* Выравнивание по левому краю */
+            background: #ccc; /* Цвет фона ячеек */
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+        td {
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+            max-width: 100px;
+            text-wrap: normal;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <button class="inc">+</button><button class="dec">-</button>
+    <script>
+        let chart = {}
+        let tables = {};
+        const blinds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        const cardsMap = {'2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9', '10':'T', '11':'J', '12':'Q', '13':'K', '14':'A'};
+        const numMap = {'2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9', 'T':'10', 'J':'11', 'Q':'12', 'K':'13', 'A':'14'}
+        const cardStages = [['AAp', 'KKp', 'QQp', 'JJp', 'AKs', 'AKo'],
+                            ['TTp', '99p', 'AQs', 'AQo'],
+                            ['88p', '77p', 'AJs', 'AJo', 'ATs'],
+                            ['66p', '55p', 'ATo', 'A9s'],
+                            ['44p', '33p', 'KQs', 'KJs', 'KQo'],
+                            ['KTs', 'K9s', 'QJs', 'KJo', 'KTo', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A9o', 'A8o', 'A7o'],
+                            ['K9o','QJo', 'QTs', 'Q9s', 'JTs', 'J9s', 'T9s','22p', 'A3s', 'A2s', 'A6o', 'A5o', 'A4o', 'A3o', 'A2o'],
+                            ['K8s', 'K7s', 'K6s', 'K5s', 'K4s', 'Q8s', 'J8s', 'T8s', '98s', 'QTo', 'JTo', 'Q9o', 'J9o', 'T9o'],
+                            ['Q7s', 'Q6s', 'J7s', 'J6s', 'K8o', 'K7o', 'K6o', 'K5o', 'K4o'],
+                            ['97s', '96s', '87s', '86s', '76s', '75s', '65s']];
+        $('.inc').click(increase);
+        $('.dec').click(decrease);
+        function increase(){
+            for(let playerPos in tables){
+                if(tables.hasOwnProperty(playerPos)){
+                    const playerPosObj = tables[playerPos];
+                    for(let firstBet in playerPosObj){
+                        if(playerPosObj.hasOwnProperty(firstBet)){
+                            const firstBetObj = playerPosObj[firstBet];
+                            for(let blinds in firstBetObj){
+                                if(firstBetObj.hasOwnProperty(blinds)){
+                                    let cards = firstBetObj[blinds];
+                                    for(let i=0; i<cardStages.length; i++){
+                                        const cardStage = cardStages[i];
+                                        let brk = false;
+                                        cardStage.forEach((pair) => {
+                                            if(cards.indexOf(pair) === -1){
+                                                cards += ', '+pair;
+                                                brk = true
+                                            }
+                                        });
+                                        if(brk){
+                                            break;
+                                        }
+                                    }
+                                    let cardsArr = cards.split(',');
+                                    cardsArr.forEach((hand) => {
+                                        if(hand){
+                                            const convertedPos = playerPos.replace('-', '+');
+                                            if(!hand[0]){
+                                                console.log('asd');
+                                            }
+                                            const handArr = convertHandToArr(hand);
+                                            if(!chart[convertedPos][firstBet][handArr[0]]){
+                                                chart[convertedPos][firstBet][handArr[0]] = {};
+                                            }
+                                            if(!chart[convertedPos][firstBet][handArr[0]][handArr[1]]){
+                                                chart[convertedPos][firstBet][handArr[0]][handArr[1]] = {};
+                                            }
+                                            if(!chart[convertedPos][firstBet][handArr[0]][handArr[1]][handArr[2]]){
+                                                chart[convertedPos][firstBet][handArr[0]][handArr[1]][handArr[2]] = blinds;
+                                            }else{
+                                                if(chart[convertedPos][firstBet][handArr[0]][handArr[1]][handArr[2]] < parseInt(blinds)){
+                                                    chart[convertedPos][firstBet][handArr[0]][handArr[1]][handArr[2]] = parseInt(blinds)
+                                                }
+                                            }
+                                        }
+                                    });
+                                    tables[playerPos][firstBet][blinds] = cards
+                                    updateCards(playerPos, firstBet, blinds, cards);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function decrease(){
+
+        }
+        function buildTable(json){
+            chart = json;
+            for(let playerPos in json){
+                if(json.hasOwnProperty(playerPos)){
+                    let formattedPlayerPos = playerPos.replace('+', '-');
+                    tables[formattedPlayerPos] = {};
+                    addNewTable(formattedPlayerPos);
+
+                    addRow(formattedPlayerPos, formattedPlayerPos);
+                    addTh(formattedPlayerPos, formattedPlayerPos, playerPos)
+                    blinds.forEach((bl) => {
+                        addTh(formattedPlayerPos, formattedPlayerPos, bl)
+                    });
+
+                    let firstBetObj = json[playerPos];
+                    for(let firstBet in firstBetObj){
+                        if(firstBetObj.hasOwnProperty(firstBet)){
+                            tables[formattedPlayerPos][firstBet] = {};
+                            addRow(formattedPlayerPos, firstBet);
+                            addTd(formattedPlayerPos, firstBet, 'asd', firstBet);
+                            let cardsObj = firstBetObj[firstBet];
+                            let cardsArr = [];
+                            let convertedCardsArr = [];
+                            for(let firstCard in cardsObj){
+                                if(cardsObj.hasOwnProperty(firstCard)){
+                                    let firstCardObj = cardsObj[firstCard];
+                                    for(let secondCard in firstCardObj){
+                                        if(firstCardObj.hasOwnProperty(secondCard)){
+                                            let secondCardObj = firstCardObj[secondCard];
+                                            for(let suit in secondCardObj){
+                                                if(secondCardObj.hasOwnProperty(suit)){
+                                                    cardsArr.push([firstCard, secondCard, suit, secondCardObj[suit]]);
+                                                    convertedCardsArr.push(convertArrToHand([firstCard, secondCard, suit]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            blinds.forEach((bl) => {
+                                let tdCards = [];
+                                cardsArr.forEach((hand, index) => {
+                                    if(bl <= hand[3]){
+                                        tdCards.push(convertedCardsArr[index]);
+                                    }
+                                });
+                                tables[formattedPlayerPos][firstBet][bl] = tdCards.join(',');
+                                addTd(formattedPlayerPos, firstBet, bl, tdCards.join(','));
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        function convertHandToArr(hand) {
+            let handArr = hand.trim().split("");
+            return [numMap[handArr[0]], numMap[handArr[1]], handArr[2]]
+        }
+        function convertArrToHand(arr){
+            return cardsMap[arr[0]] + cardsMap[arr[1]] + arr[2]
+        }
+        function addNewTable(id){
+            $('body').append('<table id='+ id +'></table>');
+        }
+        function addRow(tableId, rowClass){
+            $('#'+tableId).append('<tr class='+ rowClass +'></tr>');
+        }
+        function addTh(tableId, rowClass, th){
+            $('#'+tableId+' .'+rowClass).append('<th>' + th + '</th>');
+        }
+        function addTd(tableId, rowClass, tdClass, text){
+            $('#'+tableId+' .'+rowClass).append('<td class='+tdClass+'>' + text + '</td>');
+        }
+        function loadJson() {
+            $.getJSON('chart1.json', function(data) {
+                buildTable(data);
+            });
+        }
+        function updateCards(tableId, rowClass, tdClass, text){
+            $('#'+tableId+' .'+rowClass+' .'+tdClass).text(text);
+        }
+        loadJson();
+    </script>
+</body>
+</html>

@@ -149,8 +149,10 @@ class Table extends Component {
         }
         const positionTurns = positionTurnsMap[players.length.toString()];
         const activePlayer = players.find(player => player.tableData.position === positionTurns[activePosition]);
+        const firstBetPositionName = positionTurnsMap[players.length.toString()][firstBetPosition];
         activePlayer.timeToAct = true;
         activePlayer.tableData.firstBetPosition = firstBetPosition;
+        activePlayer.tableData.firstBetPositionName = firstBetPositionName;
         activePlayer.tableData.pot = pot;
         this.props.updatePlayers(players);
     }
@@ -177,6 +179,7 @@ class Table extends Component {
         const winners = Hand.winners(hands);
         const currentHand = {
             playersStart: [...this.props.players].map(player => player.name + ' - ' + player.stack),
+            firstBetPosition: this.state.firstBetPosition,
             pot: [...this.state.pot],
             board,
             hands,
@@ -232,8 +235,9 @@ class Table extends Component {
         players[playerIndex]['timeToAct'] = false;
         players[playerIndex]['inGame'] = !!betAmount;
         // if player is BB, and everyone folded || BB is bigger than any other bet
-        if ((!firstBetPosition && !betAmount && activePosition === players.length - 1) || 
-            (firstBetPosition && !betAmount && !pot.find(playerBetAmount => playerBetAmount > pot[playerIndex])) ) {
+        const firstIn = firstBetPosition == undefined;
+        if ((firstIn && !betAmount && activePosition === players.length - 1) || 
+            (!firstIn && !betAmount && !pot.find(playerBetAmount => playerBetAmount > pot[playerIndex])) ) {
             players[playerIndex]['inGame'] = true;
         } 
         updatePlayers(players);
@@ -279,7 +283,7 @@ class Table extends Component {
     async handleTableUpdate(round) {
         const players = [...this.props.players];
         players.forEach((player, index) => {
-            player.tableData.round = this.props.round;
+            player.tableData.round = round;
         });
         this.props.updatePlayers(players);
         await this.takeBlinds(round);
