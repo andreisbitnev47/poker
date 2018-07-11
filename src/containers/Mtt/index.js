@@ -128,6 +128,7 @@ class Mtt extends Component {
                     if (table.players[i] && playersOverMin) {
                         freePlayers.push(table.players[i]);
                         delete table.players[i];
+                        tablePlayersMap[index]--;
                         playersOverMin--;
                     }
                 }
@@ -151,22 +152,6 @@ class Mtt extends Component {
             }
           }
         }
-        // freePlayers.forEach(freePlayer => {
-        //     for (let i = 0; i < tables.length; i++) {
-        //         if (tablePlayersMap[i] < minPlayersPerTable || (
-        //             tablePlayersMap[i] < maxPlayersPerTable && tablesWithMaxPlayers
-        //         )) {
-        //             let playerIndex = tables[i].players.findIndex(player => !player);
-        //             playerIndex = playerIndex === -1 ? tables[i].players.length : playerIndex;
-        //             tables[i].players[playerIndex] = freePlayer;
-        //             tablePlayersMap[i] += 1;
-        //             if (tablePlayersMap[i] >= maxPlayersPerTable) {
-        //                 tablesWithMaxPlayers--;
-        //             }
-        //             break;
-        //         }
-        //     }
-        // })
         tables.forEach((table) => {
             table.players = table.players.filter(table => !!table);
         });
