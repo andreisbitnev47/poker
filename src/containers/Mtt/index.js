@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Table from '../Table';
 import './Mtt.css';
+import Dqn from '../../scripts/dqn';
 
 class Mtt extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class Mtt extends Component {
             const level = index === dqnNr ? 0 : `${Math.floor(Math.random() * 6) + 1}`;
             const brain = level === 0 ? 'DQN' : `BOT-${level}`;
             return {
+                id: this.uuid(),
                 index,
                 name: `player-${index}`,
                 stack: startingChips,
@@ -24,6 +26,8 @@ class Mtt extends Component {
                     position: undefined,
                     playersCnt: null,
                     pot: null,
+                    reward: -0.5,
+                    tournamentPosition: null,
                 },
                 brain,
                 level,
@@ -33,6 +37,7 @@ class Mtt extends Component {
         const finishedPlayers = [];
         const tables = [...Array(playerCnt / playersPerTable)].map((_, tableNr) => (
             {
+                id: this.uuid(),
                 tableNr,
                 updating: false,
                 players: [...Array(playersPerTable)].map((_, index) => players[tableNr * playersPerTable + index])
@@ -59,6 +64,10 @@ class Mtt extends Component {
             currentRound: undefined
         }
       }
+    uuid() {
+        return Math.random().toString(36).substring(2) 
+               + (new Date()).getTime().toString(36);
+    }
     updatePlayers(playersToUpdate) {
         const players = [...this.state.players];
         playersToUpdate.forEach(player => {
@@ -100,10 +109,10 @@ class Mtt extends Component {
             })
         });
         const tablePlayersMap = tables.map(table => table.players.filter(player => !!player).length);
-        const activePlayers = tablePlayersMap.reduce((prev, next) => prev + next);
+        const activePlayersCnt = tablePlayersMap.reduce((prev, next) => prev + next);
         let tableCnt = tables.length;
         for(let i = 1; i <= tables.length; i++) {
-            if(Math.ceil(activePlayers / i) <= playersPerTable) {
+            if(Math.ceil(activePlayersCnt / i) <= playersPerTable) {
                 tableCnt = i;
                 break;
             }
@@ -117,9 +126,9 @@ class Mtt extends Component {
             }
         }
         freePlayers = freePlayers.filter(player => !!player);
-        const minPlayersPerTable = Math.floor(activePlayers / tableCnt);
-        const maxPlayersPerTable = Math.ceil(activePlayers / tableCnt);
-        let tablesWithMaxPlayers = activePlayers % tableCnt;
+        const minPlayersPerTable = Math.floor(activePlayersCnt / tableCnt);
+        const maxPlayersPerTable = Math.ceil(activePlayersCnt / tableCnt);
+        let tablesWithMaxPlayers = activePlayersCnt % tableCnt;
         // take players from table if too many
         tables.forEach((table, index) => {
             if (tablePlayersMap[index] > minPlayersPerTable) {
@@ -134,7 +143,7 @@ class Mtt extends Component {
                 }
             }
         });
-        // distribute all freeplayer between tables
+        // distribute all freeplayers between tables
         while(freePlayers.length > 0) {
           for (let i = 0; i < tables.length; i++) {
             if (tablePlayersMap[i] < minPlayersPerTable || (
@@ -155,15 +164,92 @@ class Mtt extends Component {
         tables.forEach((table) => {
             table.players = table.players.filter(table => !!table);
         });
+
+        const players = [...this.state.players];
+        const activePlayers = players.filter(player => player.stack > 0).sort((a, b) => b.stack - a.stack);
+        const positionRewardMap = [1, 1, 0.9, 0.8, 0.6, 0.4, 0.2]
+        players.forEach((player) => {
+            const position = activePlayers.findIndex(activePlayer => activePlayer.name === player.name) + 1;
+            let reward;
+            if (position && position < positionRewardMap.length && activePlayers.length <= positionRewardMap.length) {
+                reward = positionRewardMap[position];
+            } else if (position) {
+                reward = ((1 - activePlayers.length / players.length) + (1 - position / players.length)) / 2 - 1;
+            } else {
+                reward = -1;
+            }
+            player.tableData.reward = reward;
+            player.tableData.tournamentPosition = position;
+        });
+
         this.setState({
             tables,
+            players,
             resetTableData: true,
         }, () => {
-            const activePlayers = this.state.players.filter(player => player.stack > 0);
-            if(activePlayers.length > 1 && activePlayers.find(player => player.index === this.state.dqnNr)) {
-                this.nextRound();
-            }
+            const dqnLost = !activePlayers.find(player => player.index === this.state.dqnNr);
+            // if(activePlayers.length > 1 && !dqnLost) {
+            //     this.nextRound();
+            // } else {
+            //     const dqn = new Dqn();
+            //     if(dqnLost) {
+            //         dqn.update(-1, [0, 0, 0, 0, 0, 0]);
+            //     } else {
+            //         dqn.update(1, [0, 0, 0, 0, 0, 0]);
+            //     }
+            //     this.resetTournament()
+            // }
         })
+    }
+    resetTournament() {
+        const {playerCnt, playersPerTable, startingChips} = this.props
+        const dqnNr = Math.floor(Math.random() * playerCnt);
+        const players = [...Array(playerCnt)].map((_, index) => {
+            const level = index === dqnNr ? 0 : `${Math.floor(Math.random() * 6) + 1}`;
+            const brain = level === 0 ? 'DQN' : `BOT-${level}`;
+            return {
+                id: this.uuid(),
+                index,
+                name: `player-${index}`,
+                stack: startingChips,
+                inGame: false,
+                timeToAct: false,
+                tableData: {
+                    hand: undefined,
+                    firstBetPosition: undefined,
+                    firstBetPositionName: undefined,
+                    round: undefined,
+                    position: undefined,
+                    playersCnt: null,
+                    pot: null,
+                    reward: -0.5,
+                    tournamentPosition: null,
+                },
+                brain,
+                level,
+            }
+        });
+        const activePlayers = players;
+        const finishedPlayers = [];
+        const tables = [...Array(playerCnt / playersPerTable)].map((_, tableNr) => (
+            {
+                id: this.uuid(),
+                tableNr,
+                updating: false,
+                players: [...Array(playersPerTable)].map((_, index) => players[tableNr * playersPerTable + index])
+            }
+        ));
+        this.setState({
+            dqnNr,
+            players,
+            activePlayers,
+            finishedPlayers,
+            tables,
+            update: false,
+            resetTableData: false,
+            gameCnt: 0,
+            currentRound: undefined
+        });
     }
     updateRounds() {
         const roundsMap = [...this.state.roundsMap];
@@ -192,13 +278,12 @@ class Mtt extends Component {
                 <p>Players: {players.reduce((prev, next) => next.stack > 0 ? prev + 1 : prev, 0)}</p>
                 {tables.map((table, index) => (
                     <Table 
-                        key={index}
+                        key={table.id}
                         players={table.players}
                         tableNr={index}
                         update={update}
                         resetTableData={resetTableData}
                         round={this.state.currentRound}
-                        playersCnt={this.state.activePlayers.length}
                         updatePlayers={this.updatePlayers.bind(this)}
                         updateTable={this.updateTable.bind(this)}
                     />

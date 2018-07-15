@@ -20,7 +20,13 @@ export default class SimpleBot{
         return [card1, card2, suit];
     }
     update(reward, data) {
-        const {firstBetPositionName, card1, card2, suit, stackBBs, position} = data;
+        const positionsMap = [null, 'UTG', 'UTG+1', 'UTG+2', 'MP1', 'MP2', 'C', 'B', 'SB', 'BB'];
+        const firstBetPositionName = positionsMap[data[0]];
+        const position = positionsMap[data[1]];
+        const stackBBs = data[2];
+        const card1 = data[3];
+        const card2 = data[4];
+        const suit = data[5]
         let chartNr = 0;
         const firstIn = !firstBetPositionName;
         let BBCount = Math.floor(stackBBs);

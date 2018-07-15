@@ -11,7 +11,7 @@ class Table extends Component {
         players.forEach((player, index) => {
             player.tableData.position = this.givePosition(index, sbPlayer, props.players.length);
             player.tableData.round = props.round;
-            player.tableData.playersCnt = props.playersCnt;
+            player.tableData.playersCnt = players.length;
         });
         props.updatePlayers(players);
         this.state = {
@@ -301,7 +301,7 @@ class Table extends Component {
                 <p>Money: {players.reduce((prev, next) => prev + next.stack, 0)}</p>
                 {players.map((player, index) => (
                     <Player 
-                        key={`player-${index}`} 
+                        key={player.id} 
                         player={player}
                         index={index} 
                         setNextPlayer={this.setNextPlayer.bind(this)}

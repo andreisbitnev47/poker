@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import SimpleBot from '../../scripts/simpleBot';
+import Dqn from '../../scripts/dqn';
 
 class Player extends Component {
     constructor(props) {
         super(props);
-        const bot = new SimpleBot(props.player.level);
+        const level = props.player.level;
+        const bot = level ? new SimpleBot(props.player.level) : new Dqn();
         this.state = {
             bot
         }
@@ -16,19 +18,25 @@ class Player extends Component {
         }
     }
 
-    update({hand, firstBetPosition, firstBetPositionName, round, position, playersCnt, pot}) {
+    async update({hand, firstBetPositionName, round, position, playersCnt, pot, reward, tournamentPosition}) {
         const { player, setNextPlayer, index } = this.props;
         // const action = Math.floor(Math.random() * 2);
         const formattedHand = this.formatHand(hand)
         const anteCoefficient = 0.67;
         const stackBBs = this.props.player.stack / (round.BB + round.ante * playersCnt * anteCoefficient);
-        const action = this.state.bot.update(undefined, 
-            {firstBetPositionName,
-            position,
+        const positionsMap = [null, 'UTG', 'UTG+1', 'UTG+2', 'MP1', 'MP2', 'C', 'B', 'SB', 'BB'];
+        const firstBetPosition = positionsMap.indexOf(firstBetPositionName);
+        const playerPosition = positionsMap.indexOf(position);
+        const data = [
+            firstBetPosition === -1 ? 0 : firstBetPosition, // firstBetPosition
+            playerPosition, // position
             stackBBs,
-            card1: formattedHand[0], 
-            card2: formattedHand[1], 
-            suit: formattedHand[2]});
+            formattedHand[0], // card1
+            formattedHand[1], // card2
+            formattedHand[2] // suit
+        ];
+        
+        const action = await this.state.bot.update(reward, data);
         setNextPlayer(player.stack * action, index);
     }
 
