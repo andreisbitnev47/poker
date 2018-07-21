@@ -2,19 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const config = require('./config');
+const Tournament = require('./scripts/Tournament');
 
 const app = express();
 
 app.use(bodyParser.json());
 
-if(config.buildMode === 'production') {
-    app.use('/', express.static(path.join(__dirname, './src/dist')));
-} else if(config.buildMode === 'development') {
-    const webpackMiddleware = require('webpack-dev-middleware');
-    const webpack = require('webpack');
-    const webpackConfig = require('./webpack.config.js');
-    app.use(webpackMiddleware(webpack(webpackConfig)));
-}
+// if(config.buildMode === 'production') {
+//     app.use('/', express.static(path.join(__dirname, './src/dist')));
+// } else if(config.buildMode === 'development') {
+//     const webpackMiddleware = require('webpack-dev-middleware');
+//     const webpack = require('webpack');
+//     const webpackConfig = require('./webpack.config.js');
+//     app.use(webpackMiddleware(webpack(webpackConfig)));
+// }
 
 app.post('/update', (req, res) => {
     const {reward, data} = req.body;
@@ -27,6 +28,12 @@ app.post('/update', (req, res) => {
         });
     });
 });
+
+app.get('/asd', (req, res) => {
+    const tournament = new Tournament({playerCnt: 36, playersPerTable: 9, startingChips: 500, maxGames: 10000});
+    tournament.nextRound();
+    res.end('asd');
+})
 
 app.listen(4000, () => {
   console.log('Server running on port 4000');

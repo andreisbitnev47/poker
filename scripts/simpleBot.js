@@ -1,14 +1,14 @@
-import chart0 from './chart0';
-import chart1 from './chart1';
-import chart2 from './chart2';
-import chart3 from './chart3';
-import chart4 from './chart4';
-import chart5 from './chart5';
-import chart6 from './chart6';
+const chart0 = require('./chart0');
+const chart1 = require('./chart1');
+const chart2 = require('./chart2');
+const chart3 = require('./chart3');
+const chart4 = require('./chart4');
+const chart5 = require('./chart5');
+const chart6 = require('./chart6');
 
 // playerCnt, firstBetPosition, card1, card2, suit(1 - s, 0 - o), stackBBs, position
 
-export default class SimpleBot{
+module.exports = class SimpleBot{
     constructor(aggression) {
         this.aggression = aggression || 1;
         const charts = [chart0, chart1, chart2, chart3, chart4, chart5, chart6];
@@ -55,7 +55,7 @@ export default class SimpleBot{
                             resolve(1)
                         }
                     }
-                    return Math.round(Math.random() * 10) <= this.aggression ? 1 : 0;
+                    resolve(Math.round(Math.random() * 10) <= this.aggression ? 1 : 0);
                 } else {
                     for (let i = 0; i < actionData['o']['++'].length; i++) {
                         const cards = actionData['o']['++'][i];
@@ -96,7 +96,7 @@ export default class SimpleBot{
                         }
                     }
                 }
-                return Math.round(Math.random() * 10) <= this.aggression ? 1 : 0;
+                resolve(Math.round(Math.random() * 10) <= this.aggression ? 1 : 0);
             } else if (chartNr === 1) {
                 const positionsMap = {
                     'UTG': 'E', 'UTG+1': 'E', 'UTG+2': 'E',

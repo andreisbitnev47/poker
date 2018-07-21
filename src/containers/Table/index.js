@@ -301,7 +301,7 @@ class Table extends Component {
                 <p>Money: {players.reduce((prev, next) => prev + next.stack, 0)}</p>
                 {players.map((player, index) => (
                     <Player 
-                        key={`player-${index}`} 
+                        key={player.id} 
                         player={player}
                         index={index} 
                         setNextPlayer={this.setNextPlayer.bind(this)}
