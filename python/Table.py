@@ -1,6 +1,4 @@
-from Player import Player
 import eval7
-from pprint import pprint
 
 class Table():
     def __init__(self, props):
@@ -18,7 +16,6 @@ class Table():
         self.winners = []
     
     def givePosition(self, playerIndex, sbPlayer, playersCnt):
-        positions = ["SB", "BB", "UTG", "UTG+1", "UTG+2", "MP1", "MP2", "C", "B"];
         positionsCorrectionObj = {
             "9": ["SB", "BB", "UTG", "UTG+1", "UTG+2", "MP1", "MP2", "C", "B"], 
             "8": ["SB", "BB", "UTG+1", "UTG+2", "MP1", "MP2", "C", "B"], 
@@ -63,11 +60,11 @@ class Table():
     def giveCards(self):
         self.deck = eval7.Deck()
         self.deck.shuffle()
-        self.board = deck.deal(5)
+        self.board = self.deck.deal(5)
         
         #give cards to players
         for player in self.players:
-            player["tableData"]["hand"] = deck.deal(2)
+            player["tableData"]["hand"] = self.deck.deal(2)
     
     def resetTableData(self):
         if len(self.players) <= 1:
@@ -105,12 +102,12 @@ class Table():
         activePlayer["tableData"]["firstBetPositionName"] = firstBetPositionName
         betAmount = activePlayer.update()
         if betAmount != 0 and not self.firstBetPosition:
-            self.firstBetPosition = firstBetPosition
+            self.firstBetPosition = self.activePosition
         activePlayer["stack"] -= betAmount
         activePlayer["inGame"] = True if betAmount > 0 else False
         #if player is BB, and everyone folded || BB is bigger than any other bet
         firstIn = self.firstBetPosition == False
-        if (firstIn == True and betAmount == 0 and self.activePosition == self.players.length - 1) or (firstIn == True and betAmount == 0 and not [x for x in self.pot if x > self.pot[activePlayerIndex]]):
+        if (firstIn == True and betAmount == 0 and self.activePosition == len(self.players) - 1) or (firstIn == True and betAmount == 0 and not [x for x in self.pot if x > self.pot[activePlayerIndex]]):
             activePlayer["inGame"] = True
         self.pot[activePlayerIndex] += betAmount
         self.activePosition += 1
@@ -119,79 +116,57 @@ class Table():
             self.distributePot()
         else:
             self.playerTurn()
-            
+    
+    def distributePot(self):
+        hands = []
+        for index, player in enumerate(self.players):
+            if player["inGame"]:
+                score = eval7.evaluate(self.board + player["tableData"]["hand"])
+                hand = {"index": index, "score": score}
+                hands.append(hand);
+                
+        places = [];
+        minScore = 0
+        def useScore(hand):
+            return hand["score"]
         
-class Table {
+        # sort hands by score
+        hands.sort(key=useScore, reverse=True)
+        
+        # add players to places
+        for hand in hands:
+            if hand["score"] != minScore:
+                places.append([hand["index"]])
+            else:
+                places[len(places) - 1].append(hand["index"])
 
-    distributePot() {
-        const players = this.players;
-        let hands = []; 
-        let handNames = [];
-        const board = this.board
-        const pot = this.pot
-        function translateCard(card){
-            const mapCards = {"10": "T", "11": "J", "12": "Q", "13": "K", "14": "A"};
-            return parseInt(card[0]) > 9 ? mapCards[card[0]] + card[1] : card[0] + card[1];
-        }
-        players.forEach((player, index) => {
-            if(player.inGame) {
-                const hand = Hand.solve([...player.tableData.hand, ...board].map(card => translateCard(card)));
-                hand.index = index;
-                hands.push(hand);
-            }
-        });
-        const places = [];
-        const winners = Hand.winners(hands);
-        const currentHand = {
-            playersStart: [...this.players].map(player => player.name + " - " + player.stack),
-            firstBetPosition: this.firstBetPosition,
-            pot: [...this.pot],
-            board,
-            hands,
-            winners,
-        }
-        while (hands.length) {
-            places.push(Hand.winners(hands).map(winner => winner.index));
-            handNames.push(Hand.winners(hands).map(winner => winner.descr));
-            places[places.length - 1].forEach(place => {
-                hands = hands.filter(hand => hand.index != place);
-            });
-        }
-        places.forEach((place) => {
-            place.sort((a, b) => pot[a] - pot[b]);
-            for(let i = 0; i < pot.length; i++) {
-                // give back pot to winnerPlayer
-                if(place.includes(i)) {
-                    players[i].stack += pot[i]
-                } else {
-                    let potPieces = place.length;
-                    place.forEach((winnerIndex) => {
-                        // if potPiece is bigger than player bet, potPiece = player bet
-                        const piece = pot[i] / potPieces < pot[winnerIndex] ? pot[i] / potPieces : pot[winnerIndex];
-                        players[winnerIndex].stack += piece;
-                        pot[i] -= piece;
-                        potPieces -= 1;
-                    });
-                }
-            }
-            // set winnerPlayers potPieces to 0
-            place.forEach((winnerIndex) => {pot[winnerIndex] = 0});
-        });
-        // if some potPieces are not 0, return them
-        pot.forEach((potPiece, index) => {
-            if(potPiece > 0) {
-                players[index] += potPiece;
-            }
-        });
-        currentHand.playersEnd = [...players].map(player => player.name + " - " + player.stack);
-    }
-};
-
-module.exports = Table;
+        for place in places:
+            def usePot(playerIndex):
+                return self.pot(playerIndex)
+            place.sort(key=usePot, reverse=True)
+            for i, playerPot in enumerate(self.pot):
+                # give back pot to winnerPlayer
+                if i in place:
+                    self.players[i]["stack"] += self.pot[i]
+                else:
+                    potPieces = len(place)
+                    for winnerIndex in place:
+                        # if potPiece is bigger than player bet, potPiece = player bet
+                        piece = self.pot[i] / potPieces if self.pot[i] / potPieces < self.pot[winnerIndex] else self.pot[winnerIndex]
+                        self.players[winnerIndex]["stack"] += piece
+                        self.pot[i] -= piece
+                        potPieces -= 1
+            # set winnerPlayers potPieces to 0
+            for winnerIndex in place:
+                self.pot[winnerIndex] = 0
+        # if some potPieces are not 0, return them
+        for index, potPiece in enumerate(self.pot):
+            if potPiece > 0:
+                self.players[index] += potPiece
+            
 
 import eval7
-from pprint import pprint
 deck = eval7.Deck()
 deck.shuffle()
-hand = deck.deal(7)
-eval7.evaluate(hand)
+hand = deck.deal(2)
+val7.evaluate(hand)

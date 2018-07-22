@@ -11,6 +11,7 @@ class Tournament():
         dqnNr = randint(1, playerCnt)
         players = []
         self.dqn = Dqn(5,3,0.9)
+        self.dqn.load()
         for x in range(playerCnt):
             level = 0 if x == dqnNr else randint(1, 6)
             bot = self.dqn if level == 0 else SimpleBot(level)
