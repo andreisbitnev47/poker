@@ -76,6 +76,13 @@ class Dqn():
         self.optimizer.step()
     
     def update(self, reward, new_signal):
+        print('reward:' + str(reward))
+        print('firstBetPosition: ' + str(new_signal[0]))
+        print('playerPosition: ' + str(new_signal[1]))
+        print('stackBBs: ' + str(new_signal[2]))
+        print('card1: ' + str(new_signal[3]))
+        print('card2: ' + str(new_signal[4]))
+        print('suit: ' + str(new_signal[5]))
         new_state = torch.Tensor(new_signal).float().unsqueeze(0)
         self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([self.last_reward])))
         action = self.select_action(new_state)

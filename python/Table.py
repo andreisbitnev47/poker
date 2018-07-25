@@ -4,9 +4,9 @@ class Table():
     def __init__(self, props):
         sbPlayer = 0
         for index, player in enumerate(props["players"]):
-            player["tableData"]["position"] = self.givePosition(index, sbPlayer, len(props["players"]))
-            player["tableData"]["playersCnt"] = len(props["players"]);
-        self.players = props["players"];
+            player.updateTableData("position", self.givePosition(index, sbPlayer, len(props["players"])))
+            player.updateTableData("playersCnt", len(props["players"]))
+        self.players = props["players"]
         self.sbPlayer = sbPlayer
         self.activePosition = 0
         self.firstBetPosition = False
@@ -26,12 +26,12 @@ class Table():
             "3": ["SB", "BB", "B"], 
             "2": ["SB", "BB"]
         }
-        correctedPositions = positionsCorrectionObj[str(playersCnt)];
+        correctedPositions = positionsCorrectionObj[str(playersCnt)]
         if playerIndex == sbPlayer:
             return "SB"
-        positionindex = playerIndex - sbPlayer;
-        correctedPositionIndex = positionindex if positionindex > 0 else positionindex + playersCnt;
-        return correctedPositions[correctedPositionIndex];
+        positionindex = playerIndex - sbPlayer
+        correctedPositionIndex = positionindex if positionindex > 0 else positionindex + playersCnt
+        return correctedPositions[correctedPositionIndex]
     
     def handleTableUpdate(self):
         self.takeBlinds()
@@ -43,18 +43,18 @@ class Table():
      
     def takeBlinds(self):
         for index, player in enumerate(self.players):
-            roundData = player["tableData"]["round"]
+            roundData = player.getTableData("round")
             if roundData["ante"]:
-                ante = self.takeAmount(player["stack"], roundData["ante"])
-                player["stack"] -= ante
+                ante = self.takeAmount(player.getData("stack"), roundData["ante"])
+                player.updateStack(-ante)
                 self.pot[index] += ante
-            if player["tableData"]["position"] == "SB":
-                SB = self.takeAmount(player["stack"], roundData["SB"])
-                player["stack"] -= SB
+            if player.getTableData("position") == "SB":
+                SB = self.takeAmount(player.getData("stack"), roundData["SB"])
+                player.updateStack(-SB)
                 self.pot[index] += SB
-            if player["tableData"]["position"] == "BB":
-                BB = self.takeAmount(player["stack"], roundData["BB"])
-                player["stack"] -= BB
+            if player.getTableData("position") == "BB":
+                BB = self.takeAmount(player.getData("stack"), roundData["BB"])
+                player.updateStack(-BB)
                 self.pot[index] += BB
                 
     def giveCards(self):
@@ -64,7 +64,7 @@ class Table():
         
         #give cards to players
         for player in self.players:
-            player["tableData"]["hand"] = self.deck.deal(2)
+            player.updateTableData("hand", self.deck.deal(2))
     
     def resetTableData(self):
         if len(self.players) <= 1:
@@ -73,11 +73,11 @@ class Table():
         self.pot = [0] * len(self.players)
         self.firstBetPosition = False
         for index, player in enumerate(self.players):
-            player["tableData"]["position"] = self.givePosition(index, self.sbPlayer, len(self.players))
-            player["tableData"]["playersCnt"] = len(self.players)
-            player["tableData"]["pot"] = self.pot
-            player["tableData"]["firstBetPosition"] = self.firstBetPosition
-            player["tableData"]["round"] = False
+            player.updateTableData("position", self.givePosition(index, self.sbPlayer, len(self.players)))
+            player.updateTableData("playersCnt", len(self.players))
+            player.updateTableData("pot", self.pot)
+            player.updateTableData("firstBetPosition", self.firstBetPosition)
+            player.updateTableData("round", False)
     
     def playerTurn(self):
         positionTurnsMap = {
@@ -93,22 +93,22 @@ class Table():
         positionTurns = positionTurnsMap[str(len(self.players))]
         activePlayerIndex = False
         for index, player in enumerate(self.players):
-            if player["tableData"]["position"] == positionTurns[self.activePosition]:
+            if player.getTableData("position") == positionTurns[self.activePosition]:
                 activePlayerIndex = index
                 break
         
-        activePlayer = self.players[activePlayerIndex];
+        activePlayer = self.players[activePlayerIndex]
         firstBetPositionName = positionTurnsMap[str(len(self.players))][self.firstBetPosition] if self.firstBetPosition != False else False
-        activePlayer["tableData"]["firstBetPositionName"] = firstBetPositionName
+        activePlayer.updateTableData("firstBetPositionName", firstBetPositionName)
         betAmount = activePlayer.update()
         if betAmount != 0 and not self.firstBetPosition:
             self.firstBetPosition = self.activePosition
-        activePlayer["stack"] -= betAmount
-        activePlayer["inGame"] = True if betAmount > 0 else False
+        activePlayer.updateStack(-betAmount)
+        activePlayer.updateData("inGame", True if betAmount > 0 else False)
         #if player is BB, and everyone folded || BB is bigger than any other bet
         firstIn = self.firstBetPosition == False
         if (firstIn == True and betAmount == 0 and self.activePosition == len(self.players) - 1) or (firstIn == True and betAmount == 0 and not [x for x in self.pot if x > self.pot[activePlayerIndex]]):
-            activePlayer["inGame"] = True
+            activePlayer.updateData("inGame", True)
         self.pot[activePlayerIndex] += betAmount
         self.activePosition += 1
         if self.activePosition >= len(self.players):
@@ -116,16 +116,22 @@ class Table():
             self.distributePot()
         else:
             self.playerTurn()
+            
+    def getPlayers(self):
+        return self.players
+    
+    def updatePlayers(self, players):
+        self.players = players
     
     def distributePot(self):
         hands = []
         for index, player in enumerate(self.players):
-            if player["inGame"]:
-                score = eval7.evaluate(self.board + player["tableData"]["hand"])
+            if player.getData("inGame"):
+                score = eval7.evaluate(self.board + player.getTableData("hand"))
                 hand = {"index": index, "score": score}
-                hands.append(hand);
+                hands.append(hand)
                 
-        places = [];
+        places = []
         minScore = 0
         def useScore(hand):
             return hand["score"]
@@ -142,18 +148,18 @@ class Table():
 
         for place in places:
             def usePot(playerIndex):
-                return self.pot(playerIndex)
+                return self.pot[playerIndex]
             place.sort(key=usePot, reverse=True)
             for i, playerPot in enumerate(self.pot):
                 # give back pot to winnerPlayer
                 if i in place:
-                    self.players[i]["stack"] += self.pot[i]
+                    self.players[i].updateStack(self.pot[i])
                 else:
                     potPieces = len(place)
                     for winnerIndex in place:
                         # if potPiece is bigger than player bet, potPiece = player bet
                         piece = self.pot[i] / potPieces if self.pot[i] / potPieces < self.pot[winnerIndex] else self.pot[winnerIndex]
-                        self.players[winnerIndex]["stack"] += piece
+                        self.players[winnerIndex].updateStack(piece)
                         self.pot[i] -= piece
                         potPieces -= 1
             # set winnerPlayers potPieces to 0
@@ -162,11 +168,4 @@ class Table():
         # if some potPieces are not 0, return them
         for index, potPiece in enumerate(self.pot):
             if potPiece > 0:
-                self.players[index] += potPiece
-            
-
-import eval7
-deck = eval7.Deck()
-deck.shuffle()
-hand = deck.deal(2)
-val7.evaluate(hand)
+                self.players[index].updateStack(potPiece)
