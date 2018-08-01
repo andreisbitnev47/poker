@@ -14,6 +14,7 @@ class Table():
         self.deck = []
         self.board = []
         self.winners = []
+        self.logger = props["logger"]
     
     def givePosition(self, playerIndex, sbPlayer, playersCnt):
         positionsCorrectionObj = {
@@ -65,6 +66,9 @@ class Table():
         #give cards to players
         for player in self.players:
             player.updateTableData("hand", self.deck.deal(2))
+            
+    def removeEmptySeats(self):
+         self.players = [player for player in self.players if player.getData("stack") != -1]
     
     def resetTableData(self):
         if len(self.players) <= 1:
@@ -110,6 +114,7 @@ class Table():
         if (firstIn == True and betAmount == 0 and self.activePosition == len(self.players) - 1) or (firstIn == True and betAmount == 0 and not [x for x in self.pot if x > self.pot[activePlayerIndex]]):
             activePlayer.updateData("inGame", True)
         self.pot[activePlayerIndex] += betAmount
+        self.logger({"bet": self.pot[activePlayerIndex], "tableData": activePlayer.getAllTableData(), "betAmount": betAmount, "name": activePlayer.getData('name'), "stack": activePlayer.getData('stack')}, 'playerTurn')
         self.activePosition += 1
         if self.activePosition >= len(self.players):
             self.activePosition = 0
@@ -120,15 +125,22 @@ class Table():
     def getPlayers(self):
         return self.players
     
+    def setPlayer(self, player, index):
+        try:
+            self.players[index] = player
+        except:
+            self.players.append(player)
+    
     def updatePlayers(self, players):
         self.players = players
     
     def distributePot(self):
+        self.logger(self.pot, 'potBefore')
         hands = []
         for index, player in enumerate(self.players):
             if player.getData("inGame"):
                 score = eval7.evaluate(self.board + player.getTableData("hand"))
-                hand = {"index": index, "score": score}
+                hand = {"index": index, "score": score, "hand": player.getTableData("hand")}
                 hands.append(hand)
                 
         places = []
@@ -145,7 +157,8 @@ class Table():
                 places.append([hand["index"]])
             else:
                 places[len(places) - 1].append(hand["index"])
-
+        self.logger(hands, 'hands')
+        self.logger(places, 'places')
         for place in places:
             def usePot(playerIndex):
                 return self.pot[playerIndex]
@@ -169,3 +182,4 @@ class Table():
         for index, potPiece in enumerate(self.pot):
             if potPiece > 0:
                 self.players[index].updateStack(potPiece)
+        self.logger(self.pot, 'potAfter')

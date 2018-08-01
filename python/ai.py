@@ -12,7 +12,6 @@ import torch.optim as optim
 import torch.autograd as autograd
 from torch.autograd import Variable
 import sys
-import json
 
 # Creating the architecture of the Neural Network
 
@@ -72,17 +71,10 @@ class Dqn():
         target = self.gamma*next_outputs + batch_reward
         td_loss = F.smooth_l1_loss(outputs, target)
         self.optimizer.zero_grad()
-        td_loss.backward(retain_variables = True)
+        td_loss.backward()
         self.optimizer.step()
     
     def update(self, reward, new_signal):
-        print('reward:' + str(reward))
-        print('firstBetPosition: ' + str(new_signal[0]))
-        print('playerPosition: ' + str(new_signal[1]))
-        print('stackBBs: ' + str(new_signal[2]))
-        print('card1: ' + str(new_signal[3]))
-        print('card2: ' + str(new_signal[4]))
-        print('suit: ' + str(new_signal[5]))
         new_state = torch.Tensor(new_signal).float().unsqueeze(0)
         self.memory.push((self.last_state, new_state, torch.LongTensor([int(self.last_action)]), torch.Tensor([self.last_reward])))
         action = self.select_action(new_state)
@@ -95,7 +87,8 @@ class Dqn():
         self.reward_window.append(reward)
         if len(self.reward_window) > 1000:
             del self.reward_window[0]
-        return action
+        #print('action: ' + str(action))
+        return int(action)
     
     def score(self):
         return sum(self.reward_window)/(len(self.reward_window)+1.)

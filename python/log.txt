@@ -1,0 +1,416 @@
+DQN - 15game: 0
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(0/490 + 500) | player-4(490/0 + 10) | player-5(0/490 + 500) | player-6(490/0 + 10) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(0/465 + 500) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(490/0 + 10) | player-12(490/0 + 10) | player-13(0/490 + 500) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(0/490 + 500) | player-21(0/490 + 500) | player-22(490/0 + 10) | player-23(490/0 + 10) | player-24(490/0 + 10) | player-25(0/490 + 500) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(0/440 + 500) | 
+table: table: 3
+player-29(0/490 + 500) | player-30(0/490 + 500) | player-31(490/0 + 10) | player-32(0/490 + 500) | player-33(0/490 + 500) | player-34(0/490 + 500) | player-35(0/490 + 500) | player-27(465/0 + 35) | player-28(440/0 + 60) | 
+min/max/maxCnt: 8/9/1
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-3(0.0/2090.0 + 2100.0) | player-4(480/0 + 10) | player-31(0/480 + 490) | player-6(480/0 + 10) | player-7(480/0 + 10) | player-8(480/0 + 10) | player-27(0/455 + 465) | player-1(0/405 + 440) | player-28(380/0 + 60) | 
+table: table: 1
+player-13(0.0/645.0 + 655.0) | player-14(480/0 + 10) | player-15(480/0 + 10) | player-16(0/480 + 490) | player-17(480/0 + 10) | player-10(0/430 + 440) | player-11(455/0 + 35) | player-12(430/0 + 60) | 
+table: table: 2
+player-22(0/480 + 490) | player-23(0/480 + 490) | player-24(480/0 + 10) | player-25(2065.0/0.0 + 10.0) | player-26(0/480 + 490) | player-18(455/0 + 10) | player-35(0.0/3070.0 + 3105.0) | player-9(405/0 + 60) | 
+min/max/maxCnt: 7/7/0
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-6(0/470 + 480) | player-7(470/0 + 10) | player-8(0/470 + 480) | player-28(370/0 + 10) | player-3(1600.0/0.0 + 10.0) | player-4(445/0 + 35) | player-31(0.0/0.0 + 50.0) | 
+table: table: 1
+player-15(0/470 + 480) | player-16(1535.0/0.0 + 10.0) | player-17(470/0 + 10) | player-11(0/445 + 455) | player-12(420/0 + 10) | player-13(0.0/130.0 + 165.0) | player-14(420/0 + 60) | 
+table: table: 2
+player-27(1925.0/0.0 + 10.0) | player-24(0/470 + 480) | player-25(2055.0/0.0 + 10.0) | player-18(445/0 + 10) | player-35(2605.0/0.0 + 10.0) | player-9(370/0 + 35) | player-22(1990.0/0.0 + 60.0) | 
+min/max/maxCnt: 6/7/1
+BB: 100, SB: 50, ante: 20, games: 4
+
+table: table: 0
+player-7(450/0 + 20) | player-8(0.0/1055.0 + 1075.0) | player-28(350/0 + 20) | player-3(0.0/1580.0 + 1600.0) | player-4(425/0 + 20) | player-11(0.0/510.0 + 580.0) | player-18(325/0 + 120) | 
+table: table: 1
+player-17(0/450 + 470) | player-12(400/0 + 20) | player-13(0.0/565.0 + 585.0) | player-14(400/0 + 20) | player-15(0.0/0.0 + 25.0) | player-16(1415.0/0.0 + 120.0) | 
+table: table: 2
+player-25(2035.0/0.0 + 20.0) | player-35(2585.0/0.0 + 20.0) | player-9(0/350 + 370) | player-22(1970.0/0.0 + 20.0) | player-27(1855.0/0.0 + 70.0) | player-24(495.0/0.0 + 120.0) | 
+min/max/maxCnt: 7/8/1
+game: 1
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(490/0 + 10) | player-4(490/0 + 10) | player-5(490/0 + 10) | player-6(0/490 + 500) | player-7(490/0 + 10) | player-8(0/490 + 500) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(490/0 + 10) | player-12(0/490 + 500) | player-13(490/0 + 10) | player-14(0/490 + 500) | player-15(490/0 + 10) | player-16(0/490 + 500) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(0/490 + 500) | player-22(0/490 + 500) | player-23(490/0 + 10) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(0/440 + 500) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(490/0 + 10) | player-31(0/490 + 500) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(440/0 + 60) | 
+min/max/maxCnt: 7/8/2
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-3(480/0 + 10) | player-4(480/0 + 10) | player-5(0/480 + 490) | player-7(480/0 + 10) | player-8(1625.0/0.0 + 10.0) | player-0(455/0 + 10) | player-1(405/0 + 35) | player-27(405/0 + 60) | 
+table: table: 1
+player-12(1625.0/0.0 + 10.0) | player-13(0/480 + 490) | player-28(430/0 + 10) | player-15(480/0 + 10) | player-17(480/0 + 10) | player-9(455/0 + 10) | player-10(405/0 + 35) | player-11(430/0 + 60) | 
+table: table: 2
+player-23(480/0 + 10) | player-24(0/480 + 490) | player-25(0/480 + 490) | player-26(0/480 + 490) | player-18(455/0 + 10) | player-19(1550.0/0.0 + 35.0) | player-20(430/0 + 60) | 
+table: table: 3
+player-32(0/480 + 490) | player-33(0/480 + 490) | player-34(480/0 + 10) | player-35(0/480 + 490) | player-29(480/0 + 10) | player-30(0/455 + 490) | player-31(0.0/595.0 + 655.0) | 
+min/max/maxCnt: 8/9/1
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-4(470/0 + 10) | player-5(625.0/0.0 + 10.0) | player-7(470/0 + 10) | player-8(1615.0/0.0 + 10.0) | player-29(0/470 + 480) | player-0(0/445 + 455) | player-1(395/0 + 10) | player-27(370/0 + 35) | player-3(420/0 + 60) | 
+table: table: 1
+player-13(0.0/625.0 + 635.0) | player-28(420/0 + 10) | player-15(470/0 + 10) | player-17(0/470 + 480) | player-9(445/0 + 10) | player-10(395/0 + 10) | player-11(0/395 + 430) | player-12(1565.0/0.0 + 60.0) | 
+table: table: 2
+player-24(0.0/1575.0 + 1585.0) | player-31(0.0/155.0 + 165.0) | player-34(470/0 + 10) | player-35(2460.0/0.0 + 10.0) | player-18(445/0 + 10) | player-19(1540.0/0.0 + 10.0) | player-20(395/0 + 35) | player-23(420/0 + 60) | 
+min/max/maxCnt: 7/8/1
+BB: 100, SB: 50, ante: 20, games: 4
+
+table: table: 0
+player-7(450/0 + 20) | player-8(1595.0/0.0 + 20.0) | player-29(0.0/5.0 + 25.0) | player-0(1035.0/0.0 + 20.0) | player-27(0/350 + 370) | player-3(400/0 + 20) | player-4(400/0 + 70) | player-5(0.0/505.0 + 625.0) | 
+table: table: 1
+player-28(0/400 + 420) | player-15(0/450 + 470) | player-9(425/0 + 20) | player-10(375/0 + 20) | player-1(375/0 + 20) | player-12(1495.0/0.0 + 70.0) | player-13(0.0/1525.0 + 1645.0) | 
+table: table: 2
+player-34(450/0 + 20) | player-35(2440.0/0.0 + 20.0) | player-18(0/425 + 445) | player-19(1520.0/0.0 + 20.0) | player-20(0/375 + 395) | player-23(350/0 + 70) | player-24(1765.0/0.0 + 120.0) | 
+min/max/maxCnt: 6/7/2
+BB: 100, SB: 50, ante: 20, games: 3
+
+table: table: 0
+player-8(1575.0/0.0 + 20.0) | player-0(0.0/1015.0 + 1035.0) | player-27(0.0/895.0 + 915.0) | player-3(380/0 + 20) | player-4(380/0 + 20) | player-5(0.0/185.0 + 255.0) | player-7(330/0 + 120) | 
+table: table: 1
+player-18(0.0/30.0 + 50.0) | player-9(0/405 + 425) | player-10(355/0 + 20) | player-1(0/355 + 375) | player-12(1475.0/0.0 + 20.0) | player-13(1205.0/0.0 + 70.0) | player-28(1270.0/0.0 + 120.0) | 
+table: table: 2
+player-19(1500.0/0.0 + 20.0) | player-20(0.0/1020.0 + 1040.0) | player-23(330/0 + 20) | player-24(1745.0/0.0 + 20.0) | player-34(380/0 + 70) | player-35(2320.0/0.0 + 120.0) | 
+min/max/maxCnt: 8/9/1
+BB: 100, SB: 50, ante: 20, games: 2
+
+table: table: 0
+player-23(0/310 + 330) | player-24(0.0/1725.0 + 1745.0) | player-0(2365.0/0.0 + 20.0) | player-19(1480.0/0.0 + 20.0) | player-3(0/360 + 380) | player-4(360/0 + 20) | player-20(1270.0/0.0 + 20.0) | player-7(260/0 + 70) | player-8(0.0/1455.0 + 1575.0) | 
+table: table: 1
+player-35(2300.0/0.0 + 20.0) | player-9(770.0/0.0 + 20.0) | player-10(0/335 + 355) | player-34(360/0 + 20) | player-12(0.0/1455.0 + 1475.0) | player-13(1185.0/0.0 + 20.0) | player-28(1200.0/0.0 + 70.0) | player-18(0.0/170.0 + 290.0) | 
+min/max/maxCnt: 8/8/0
+BB: 100, SB: 50, ante: 20, games: 1
+
+table: table: 0
+player-0(0.0/2345.0 + 2365.0) | player-19(1460.0/0.0 + 20.0) | player-3(1600.0/0.0 + 20.0) | player-4(0/340 + 360) | player-20(1250.0/0.0 + 20.0) | player-7(240/0 + 20) | player-8(0.0/2320.0 + 2390.0) | player-24(0.0/50.0 + 170.0) | 
+table: table: 1
+player-9(750.0/0.0 + 20.0) | player-10(0.0/110.0 + 130.0) | player-34(340/0 + 20) | player-12(1100.0/0.0 + 20.0) | player-13(1165.0/0.0 + 20.0) | player-28(1180.0/0.0 + 20.0) | player-18(0.0/950.0 + 1020.0) | player-35(2180.0/0.0 + 120.0) | 
+min/max/maxCnt: 7/7/0
+BB: 200, SB: 100, ante: 40, games: 4
+
+table: table: 0
+player-3(0.0/1560.0 + 1600.0) | player-4(1290.0/0.0 + 40.0) | player-20(0.0/1210.0 + 1250.0) | player-7(0/200 + 240) | player-8(0.0/0.0 + 25.0) | player-0(3870.0/0.0 + 140.0) | player-19(1220.0/0.0 + 240.0) | 
+table: table: 1
+player-12(1060.0/0.0 + 40.0) | player-13(1125.0/0.0 + 40.0) | player-28(0.0/1140.0 + 1180.0) | player-18(0.0/1330.0 + 1370.0) | player-35(2140.0/0.0 + 40.0) | player-9(0.0/610.0 + 750.0) | player-34(0/100 + 340) | 
+min/max/maxCnt: 8/8/0
+game: 2
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(490/0 + 10) | player-3(490/0 + 10) | player-4(0/490 + 500) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(490/0 + 10) | player-8(0/490 + 500) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(490/0 + 10) | player-12(0/490 + 500) | player-13(490/0 + 10) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(0/490 + 500) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(0/490 + 500) | player-21(0/490 + 500) | player-22(490/0 + 10) | player-23(490/0 + 10) | player-24(0/490 + 500) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(0/490 + 500) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(0/490 + 500) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(440/0 + 60) | 
+min/max/maxCnt: 7/8/3
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-3(480/0 + 10) | player-4(1135.0/0.0 + 10.0) | player-5(480/0 + 10) | player-6(0/480 + 490) | player-7(0/480 + 490) | player-0(455/0 + 10) | player-1(0/405 + 440) | player-2(430/0 + 60) | 
+table: table: 1
+player-12(1135.0/0.0 + 10.0) | player-13(0/480 + 490) | player-14(480/0 + 10) | player-15(0/480 + 490) | player-17(0/480 + 490) | player-9(455/0 + 10) | player-10(0/405 + 440) | player-11(430/0 + 60) | 
+table: table: 2
+player-27(0/455 + 465) | player-22(480/0 + 10) | player-23(480/0 + 10) | player-25(0/480 + 490) | player-26(0/480 + 490) | player-18(455/0 + 10) | player-19(0/405 + 440) | player-20(1575.0/0.0 + 60.0) | 
+table: table: 3
+player-32(0/480 + 490) | player-33(1135.0/0.0 + 10.0) | player-34(480/0 + 10) | player-35(0/480 + 490) | player-28(430/0 + 10) | player-29(0/455 + 490) | player-31(0/430 + 490) | 
+min/max/maxCnt: 7/7/0
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-4(1125.0/0.0 + 10.0) | player-5(0/470 + 480) | player-6(1510.0/0.0 + 10.0) | player-0(445/0 + 10) | player-28(420/0 + 10) | player-2(395/0 + 35) | player-3(420/0 + 60) | 
+table: table: 1
+player-13(0.0/140.0 + 150.0) | player-14(470/0 + 10) | player-29(1980.0/0.0 + 10.0) | player-9(0/445 + 455) | player-10(1840.0/0.0 + 10.0) | player-11(395/0 + 35) | player-12(1075.0/0.0 + 60.0) | 
+table: table: 2
+player-22(470/0 + 10) | player-23(0/470 + 480) | player-25(1965.0/0.0 + 10.0) | player-18(445/0 + 10) | player-33(0.0/1125.0 + 1135.0) | player-20(0.0/1540.0 + 1575.0) | player-34(0/420 + 480) | 
+min/max/maxCnt: 9/9/0
+game: 3
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(0/490 + 500) | player-4(490/0 + 10) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(0/490 + 500) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(0/490 + 500) | player-12(490/0 + 10) | player-13(0/490 + 500) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(0/490 + 500) | player-9(0/465 + 500) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(490/0 + 10) | player-22(490/0 + 10) | player-23(0/490 + 500) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(0/490 + 500) | player-30(490/0 + 10) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(0/490 + 500) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(440/0 + 60) | 
+min/max/maxCnt: 7/8/2
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-3(1625.0/0.0 + 10.0) | player-4(0/480 + 490) | player-5(480/0 + 10) | player-6(480/0 + 10) | player-8(480/0 + 10) | player-0(455/0 + 10) | player-1(405/0 + 35) | player-18(405/0 + 60) | 
+table: table: 1
+player-12(480/0 + 10) | player-27(0/455 + 465) | player-14(480/0 + 10) | player-15(0/480 + 490) | player-16(480/0 + 10) | player-19(430/0 + 10) | player-10(405/0 + 35) | player-11(2040.0/0.0 + 60.0) | 
+table: table: 2
+player-23(0.0/645.0 + 655.0) | player-24(0/480 + 490) | player-25(480/0 + 10) | player-26(480/0 + 10) | player-20(480/0 + 10) | player-21(455/0 + 35) | player-22(0/430 + 490) | 
+table: table: 3
+player-32(480/0 + 10) | player-33(0.0/1135.0 + 1145.0) | player-34(480/0 + 10) | player-35(480/0 + 10) | player-28(0/430 + 440) | player-30(455/0 + 35) | player-31(430/0 + 60) | 
+min/max/maxCnt: 7/7/0
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-5(0/470 + 480) | player-6(470/0 + 10) | player-8(0/470 + 480) | player-1(395/0 + 10) | player-18(395/0 + 10) | player-3(1590.0/0.0 + 35.0) | player-4(575.0/0.0 + 60.0) | 
+table: table: 1
+player-14(0/470 + 480) | player-15(1080.0/0.0 + 10.0) | player-16(0/470 + 480) | player-19(420/0 + 10) | player-10(395/0 + 10) | player-11(0.0/2005.0 + 2040.0) | player-12(420/0 + 60) | 
+table: table: 2
+player-24(0.0/1525.0 + 1535.0) | player-25(470/0 + 10) | player-26(470/0 + 10) | player-20(0/470 + 480) | player-21(445/0 + 10) | player-0(420/0 + 35) | player-23(0.0/105.0 + 165.0) | 
+table: table: 3
+player-33(0.0/695.0 + 705.0) | player-34(470/0 + 10) | player-35(470/0 + 10) | player-28(995.0/0.0 + 10.0) | player-30(445/0 + 10) | player-31(395/0 + 35) | player-32(0/420 + 480) | 
+min/max/maxCnt: 8/8/0
+BB: 100, SB: 50, ante: 20, games: 4
+
+table: table: 0
+player-6(0/450 + 470) | player-8(0.0/1065.0 + 1085.0) | player-30(425/0 + 20) | player-1(375/0 + 20) | player-18(375/0 + 20) | player-3(1570.0/0.0 + 20.0) | player-4(505.0/0.0 + 70.0) | player-28(875.0/0.0 + 120.0) | 
+table: table: 1
+player-15(0.0/1060.0 + 1080.0) | player-31(0/375 + 395) | player-32(1015.0/0.0 + 20.0) | player-19(400/0 + 20) | player-10(375/0 + 20) | player-11(1540.0/0.0 + 20.0) | player-12(0/350 + 420) | player-14(1410.0/0.0 + 120.0) | 
+table: table: 2
+player-25(450/0 + 20) | player-26(0/450 + 470) | player-35(0/450 + 470) | player-33(0.0/205.0 + 225.0) | player-21(425/0 + 20) | player-0(400/0 + 20) | player-34(400/0 + 70) | player-24(2125.0/0.0 + 120.0) | 
+min/max/maxCnt: 6/7/2
+BB: 100, SB: 50, ante: 20, games: 3
+
+table: table: 0
+player-30(0/405 + 425) | player-1(0/355 + 375) | player-18(355/0 + 20) | player-3(1550.0/0.0 + 20.0) | player-4(485.0/0.0 + 20.0) | player-28(0.0/805.0 + 875.0) | player-8(1705.0/0.0 + 120.0) | 
+table: table: 1
+player-32(0.0/995.0 + 1015.0) | player-19(0/380 + 400) | player-10(355/0 + 20) | player-11(1520.0/0.0 + 20.0) | player-12(0.0/1415.0 + 1435.0) | player-14(1340.0/0.0 + 70.0) | player-15(540.0/0.0 + 120.0) | 
+table: table: 2
+player-21(0/405 + 425) | player-0(0/380 + 400) | player-34(0/380 + 400) | player-24(2105.0/0.0 + 20.0) | player-25(380/0 + 70) | player-35(1295.0/0.0 + 120.0) | 
+min/max/maxCnt: 8/9/1
+BB: 100, SB: 50, ante: 20, games: 2
+
+table: table: 0
+player-21(0.0/1415.0 + 1435.0) | player-24(2085.0/0.0 + 20.0) | player-1(1285.0/0.0 + 20.0) | player-18(0/335 + 355) | player-3(1530.0/0.0 + 20.0) | player-4(0.0/465.0 + 485.0) | player-28(0.0/430.0 + 450.0) | player-8(0.0/1635.0 + 1705.0) | player-30(0.0/0.0 + 100.0) | 
+table: table: 1
+player-35(0.0/1275.0 + 1295.0) | player-25(0/360 + 380) | player-10(335/0 + 20) | player-11(1500.0/0.0 + 20.0) | player-12(400.0/0.0 + 20.0) | player-14(1320.0/0.0 + 20.0) | player-15(470.0/0.0 + 70.0) | player-32(2540.0/0.0 + 120.0) | 
+min/max/maxCnt: 6/6/0
+game: 4
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(490/0 + 10) | player-3(490/0 + 10) | player-4(0/490 + 500) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(0/440 + 500) | 
+table: table: 1
+player-11(490/0 + 10) | player-12(490/0 + 10) | player-13(490/0 + 10) | player-14(0/490 + 500) | player-15(0/490 + 500) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(0/465 + 500) | player-10(0/440 + 500) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(490/0 + 10) | player-22(490/0 + 10) | player-23(0/490 + 500) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(0/490 + 500) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(490/0 + 10) | player-35(0/490 + 500) | player-27(0/465 + 500) | player-28(440/0 + 60) | 
+min/max/maxCnt: 7/8/2
+game: 5
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(490/0 + 10) | player-3(0/490 + 500) | player-4(0/490 + 500) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(0/490 + 500) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(0/440 + 500) | 
+table: table: 1
+player-11(0/490 + 500) | player-12(0/490 + 500) | player-13(0/490 + 500) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(0/490 + 500) | player-22(490/0 + 10) | player-23(0/490 + 500) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(490/0 + 10) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(0/490 + 500) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(0/440 + 500) | 
+min/max/maxCnt: 7/8/1
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-27(0/455 + 465) | player-4(2065.0/0.0 + 10.0) | player-5(0/480 + 490) | player-6(480/0 + 10) | player-8(480/0 + 10) | player-0(0/455 + 465) | player-18(430/0 + 35) | player-2(0/430 + 490) | 
+table: table: 1
+player-14(480/0 + 10) | player-15(0/480 + 490) | player-16(480/0 + 10) | player-17(480/0 + 10) | player-9(0/455 + 465) | player-10(0/405 + 440) | player-11(1575.0/0.0 + 60.0) | 
+table: table: 2
+player-22(0/480 + 490) | player-24(480/0 + 10) | player-25(0/480 + 490) | player-26(0/480 + 490) | player-19(0/430 + 440) | player-20(0/455 + 490) | player-21(1085.0/0.0 + 60.0) | 
+table: table: 3
+player-31(480/0 + 10) | player-32(480/0 + 10) | player-34(480/0 + 10) | player-35(0/480 + 490) | player-28(1085.0/0.0 + 10.0) | player-29(455/0 + 35) | player-30(430/0 + 60) | 
+min/max/maxCnt: 7/8/1
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-4(2055.0/0.0 + 10.0) | player-29(445/0 + 10) | player-6(470/0 + 10) | player-8(0/470 + 480) | player-0(1915.0/0.0 + 10.0) | player-18(420/0 + 10) | player-2(0.0/15.0 + 50.0) | player-28(0.0/1025.0 + 1085.0) | 
+table: table: 1
+player-15(0.0/15.0 + 25.0) | player-16(470/0 + 10) | player-17(0/470 + 480) | player-9(1450.0/0.0 + 10.0) | player-30(420/0 + 10) | player-11(1540.0/0.0 + 35.0) | player-14(420/0 + 60) | 
+table: table: 2
+player-24(470/0 + 10) | player-34(470/0 + 10) | player-35(0.0/615.0 + 625.0) | player-31(470/0 + 10) | player-20(2460.0/0.0 + 10.0) | player-21(1050.0/0.0 + 35.0) | player-32(0/420 + 480) | 
+min/max/maxCnt: 6/7/1
+BB: 100, SB: 50, ante: 20, games: 4
+
+table: table: 0
+player-29(0/425 + 445) | player-6(0/450 + 470) | player-0(1895.0/0.0 + 20.0) | player-18(400/0 + 20) | player-2(0.0/180.0 + 200.0) | player-28(1395.0/0.0 + 70.0) | player-4(0.0/1935.0 + 2055.0) | 
+table: table: 1
+player-17(610.0/0.0 + 20.0) | player-9(1430.0/0.0 + 20.0) | player-30(0/400 + 420) | player-11(0.0/1520.0 + 1540.0) | player-14(350/0 + 70) | player-16(350/0 + 120) | 
+table: table: 2
+player-35(0.0/1160.0 + 1180.0) | player-31(0/450 + 470) | player-20(2440.0/0.0 + 20.0) | player-21(0.0/1030.0 + 1050.0) | player-24(400/0 + 70) | player-34(0/350 + 470) | 
+min/max/maxCnt: 6/7/1
+BB: 100, SB: 50, ante: 20, games: 3
+
+table: table: 0
+player-6(1675.0/0.0 + 20.0) | player-0(0.0/1875.0 + 1895.0) | player-18(0/380 + 400) | player-20(2420.0/0.0 + 20.0) | player-28(1375.0/0.0 + 20.0) | player-4(0.0/1515.0 + 1585.0) | player-24(0/280 + 400) | 
+table: table: 1
+player-9(0.0/1410.0 + 1430.0) | player-35(0.0/3240.0 + 3260.0) | player-11(2170.0/0.0 + 20.0) | player-14(330/0 + 20) | player-16(280/0 + 70) | player-17(490.0/0.0 + 120.0) | 
+min/max/maxCnt: 5/6/1
+BB: 100, SB: 50, ante: 20, games: 2
+
+table: table: 0
+player-9(3070.0/0.0 + 20.0) | player-20(0.0/2400.0 + 2420.0) | player-28(1355.0/0.0 + 20.0) | player-4(4010.0/0.0 + 20.0) | player-6(1605.0/0.0 + 70.0) | player-0(190.0/0.0 + 120.0) | 
+table: table: 1
+player-14(0/310 + 330) | player-16(0/260 + 280) | player-17(470.0/0.0 + 20.0) | player-35(1760.0/0.0 + 70.0) | player-11(2050.0/0.0 + 120.0) | 
+min/max/maxCnt: 5/6/1
+BB: 100, SB: 50, ante: 20, games: 1
+
+table: table: 0
+player-20(2650.0/0.0 + 20.0) | player-28(0.0/1335.0 + 1355.0) | player-4(3990.0/0.0 + 20.0) | player-6(1585.0/0.0 + 20.0) | player-0(0.0/120.0 + 190.0) | player-9(2950.0/0.0 + 120.0) | 
+table: table: 1
+player-14(0.0/30.0 + 50.0) | player-16(0.0/750.0 + 770.0) | player-17(450.0/0.0 + 20.0) | player-35(1690.0/0.0 + 70.0) | player-11(0.0/1930.0 + 2050.0) | 
+min/max/maxCnt: 8/8/0
+BB: 200, SB: 100, ante: 40, games: 4
+
+table: table: 0
+player-9(2910.0/0.0 + 40.0) | player-20(0.0/2610.0 + 2650.0) | player-28(0.0/1685.0 + 1725.0) | player-4(3950.0/0.0 + 40.0) | player-6(1545.0/0.0 + 40.0) | player-11(2920.0/0.0 + 40.0) | player-17(0.0/310.0 + 450.0) | player-35(1450.0/0.0 + 240.0) | 
+min/max/maxCnt: 6/6/0
+BB: 200, SB: 100, ante: 40, games: 3
+
+table: table: 0
+player-20(0.0/5185.0 + 5225.0) | player-4(0.0/3910.0 + 3950.0) | player-6(1505.0/0.0 + 40.0) | player-11(2880.0/0.0 + 40.0) | player-35(0.0/1310.0 + 1450.0) | player-9(0.0/2670.0 + 2910.0) | 
+min/max/maxCnt: 4/4/0
+game: 6
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(490/0 + 10) | player-4(490/0 + 10) | player-5(490/0 + 10) | player-6(0/490 + 500) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(0/490 + 500) | player-12(0/490 + 500) | player-13(490/0 + 10) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(0/465 + 500) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(0/490 + 500) | player-21(490/0 + 10) | player-22(490/0 + 10) | player-23(490/0 + 10) | player-24(490/0 + 10) | player-25(0/490 + 500) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(490/0 + 10) | player-31(0/490 + 500) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(0/440 + 500) | 
+min/max/maxCnt: 7/8/3
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-3(0/480 + 490) | player-4(0/480 + 490) | player-5(480/0 + 10) | player-7(480/0 + 10) | player-8(480/0 + 10) | player-0(455/0 + 10) | player-1(405/0 + 35) | player-2(1085.0/0.0 + 60.0) | 
+table: table: 1
+player-13(0/480 + 490) | player-14(0/480 + 490) | player-15(480/0 + 10) | player-16(480/0 + 10) | player-17(480/0 + 10) | player-18(455/0 + 10) | player-10(405/0 + 35) | player-11(1550.0/0.0 + 60.0) | 
+table: table: 2
+player-21(480/0 + 10) | player-22(480/0 + 10) | player-23(480/0 + 10) | player-24(0/480 + 490) | player-26(0/480 + 490) | player-27(455/0 + 10) | player-19(405/0 + 35) | player-20(1085.0/0.0 + 60.0) | 
+table: table: 3
+player-32(0/480 + 490) | player-33(480/0 + 10) | player-34(0/480 + 490) | player-35(0/480 + 490) | player-28(1085.0/0.0 + 10.0) | player-29(455/0 + 35) | player-30(0/430 + 490) | 
+min/max/maxCnt: 8/9/1
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-28(1075.0/0.0 + 10.0) | player-5(0/470 + 480) | player-7(470/0 + 10) | player-8(470/0 + 10) | player-29(445/0 + 10) | player-0(445/0 + 10) | player-1(395/0 + 10) | player-2(1050.0/0.0 + 35.0) | player-3(1055.0/0.0 + 60.0) | 
+table: table: 1
+player-14(0.0/1105.0 + 1115.0) | player-15(0/470 + 480) | player-16(470/0 + 10) | player-17(470/0 + 10) | player-18(445/0 + 10) | player-10(395/0 + 10) | player-11(1515.0/0.0 + 35.0) | player-33(420/0 + 60) | 
+table: table: 2
+player-22(470/0 + 10) | player-23(470/0 + 10) | player-24(0.0/1105.0 + 1115.0) | player-35(2005.0/0.0 + 10.0) | player-27(0/445 + 455) | player-19(395/0 + 10) | player-20(1050.0/0.0 + 35.0) | player-21(420/0 + 60) | 
+min/max/maxCnt: 8/8/0
+BB: 100, SB: 50, ante: 20, games: 4
+
+table: table: 0
+player-7(0/450 + 470) | player-8(0/450 + 470) | player-29(425/0 + 20) | player-1(375/0 + 20) | player-2(1030.0/0.0 + 20.0) | player-3(1035.0/0.0 + 20.0) | player-28(1005.0/0.0 + 70.0) | player-5(515.0/0.0 + 120.0) | 
+table: table: 1
+player-15(0.0/1075.0 + 1095.0) | player-16(0/450 + 470) | player-17(450/0 + 20) | player-18(0/425 + 445) | player-10(375/0 + 20) | player-11(0.0/1495.0 + 1515.0) | player-33(350/0 + 70) | player-14(515.0/0.0 + 120.0) | 
+table: table: 2
+player-23(0/450 + 470) | player-24(1685.0/0.0 + 20.0) | player-35(0.0/1985.0 + 2005.0) | player-0(0/425 + 445) | player-19(375/0 + 20) | player-20(1030.0/0.0 + 20.0) | player-21(350/0 + 70) | player-22(0/350 + 470) | 
+min/max/maxCnt: 9/9/0
+BB: 100, SB: 50, ante: 20, games: 3
+
+table: table: 0
+player-19(0/355 + 375) | player-29(0/405 + 425) | player-20(0.0/1010.0 + 1030.0) | player-1(355/0 + 20) | player-2(1010.0/0.0 + 20.0) | player-3(1015.0/0.0 + 20.0) | player-28(985.0/0.0 + 20.0) | player-5(445.0/0.0 + 70.0) | player-7(1090.0/0.0 + 120.0) | 
+table: table: 1
+player-24(0.0/1665.0 + 1685.0) | player-17(0/430 + 450) | player-35(1515.0/0.0 + 20.0) | player-21(330/0 + 20) | player-10(355/0 + 20) | player-11(3735.0/0.0 + 20.0) | player-33(330/0 + 20) | player-14(445.0/0.0 + 70.0) | player-22(1865.0/0.0 + 120.0) | 
+min/max/maxCnt: 8/9/1
+BB: 100, SB: 50, ante: 20, games: 2
+
+table: table: 0
+player-29(0.0/80.0 + 100.0) | player-20(585.0/0.0 + 20.0) | player-1(0/335 + 355) | player-2(990.0/0.0 + 20.0) | player-3(995.0/0.0 + 20.0) | player-28(965.0/0.0 + 20.0) | player-5(425.0/0.0 + 20.0) | player-7(1020.0/0.0 + 70.0) | player-19(1275.0/0.0 + 120.0) | 
+table: table: 1
+player-35(0.0/1495.0 + 1515.0) | player-21(0/310 + 330) | player-10(335/0 + 20) | player-11(3715.0/0.0 + 20.0) | player-33(310/0 + 20) | player-14(425.0/0.0 + 20.0) | player-22(0.0/1795.0 + 1865.0) | player-24(2305.0/0.0 + 120.0) | 
+min/max/maxCnt: 7/8/1
+BB: 100, SB: 50, ante: 20, games: 1
+
+table: table: 0
+player-1(0.0/725.0 + 745.0) | player-2(0.0/970.0 + 990.0) | player-3(975.0/0.0 + 20.0) | player-28(945.0/0.0 + 20.0) | player-5(405.0/0.0 + 20.0) | player-7(1000.0/0.0 + 20.0) | player-19(1205.0/0.0 + 70.0) | player-20(0.0/465.0 + 585.0) | 
+table: table: 1
+player-10(0/315 + 335) | player-11(3695.0/0.0 + 20.0) | player-33(0/290 + 310) | player-14(405.0/0.0 + 20.0) | player-22(2700.0/0.0 + 20.0) | player-24(2235.0/0.0 + 70.0) | player-21(1070.0/0.0 + 120.0) | 
+min/max/maxCnt: 6/7/1
+game: 7
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(490/0 + 10) | player-4(490/0 + 10) | player-5(490/0 + 10) | player-6(0/490 + 500) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(490/0 + 10) | player-12(0/490 + 500) | player-13(0/490 + 500) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(0/490 + 500) | player-22(490/0 + 10) | player-23(490/0 + 10) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(0/490 + 500) | player-18(0/465 + 500) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(0/490 + 500) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(0/490 + 500) | player-35(0/490 + 500) | player-27(465/0 + 35) | player-28(0/440 + 500) | 
+min/max/maxCnt: 7/8/1
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-4(480/0 + 10) | player-5(480/0 + 10) | player-6(1135.0/0.0 + 10.0) | player-7(0/480 + 490) | player-8(0/480 + 490) | player-0(455/0 + 10) | player-1(405/0 + 35) | player-3(430/0 + 60) | 
+table: table: 1
+player-14(0/480 + 490) | player-15(0/480 + 490) | player-16(480/0 + 10) | player-17(480/0 + 10) | player-10(430/0 + 10) | player-11(455/0 + 35) | player-13(1085.0/0.0 + 60.0) | 
+table: table: 2
+player-22(0/480 + 490) | player-23(0/480 + 490) | player-24(480/0 + 10) | player-25(480/0 + 10) | player-18(1600.0/0.0 + 10.0) | player-19(405/0 + 35) | player-20(430/0 + 60) | 
+table: table: 3
+player-31(0/480 + 490) | player-32(0/480 + 490) | player-33(480/0 + 10) | player-35(2065.0/0.0 + 10.0) | player-27(0/455 + 465) | player-9(430/0 + 35) | player-29(430/0 + 60) | 
+min/max/maxCnt: 8/8/0
+BB: 50, SB: 25, ante: 10, games: 1
+
+table: table: 0
+player-5(470/0 + 10) | player-6(1125.0/0.0 + 10.0) | player-9(0/420 + 430) | player-8(0.0/1105.0 + 1115.0) | player-0(445/0 + 10) | player-1(0/395 + 405) | player-3(0/395 + 430) | player-4(420/0 + 60) | 
+table: table: 1
+player-15(0.0/1095.0 + 1105.0) | player-16(0/470 + 480) | player-17(470/0 + 10) | player-32(0.0/1550.0 + 1560.0) | player-10(420/0 + 10) | player-11(0/445 + 455) | player-13(1050.0/0.0 + 35.0) | player-29(0/370 + 430) | 
+table: table: 2
+player-23(1095.0/0.0 + 10.0) | player-24(0/470 + 480) | player-25(470/0 + 10) | player-35(2055.0/0.0 + 10.0) | player-18(1590.0/0.0 + 10.0) | player-19(395/0 + 10) | player-20(395/0 + 35) | player-33(0/420 + 480) | 
+min/max/maxCnt: 9/9/0
+game: 8
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(490/0 + 10) | player-3(0/490 + 500) | player-4(490/0 + 10) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(0/465 + 500) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(0/490 + 500) | player-12(0/490 + 500) | player-13(490/0 + 10) | player-14(490/0 + 10) | player-15(490/0 + 10) | player-16(490/0 + 10) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(0/440 + 500) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(0/490 + 500) | player-22(490/0 + 10) | player-23(490/0 + 10) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(0/490 + 500) | player-30(0/490 + 500) | player-31(490/0 + 10) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(440/0 + 60) | 
+min/max/maxCnt: 8/8/0
+BB: 50, SB: 25, ante: 10, games: 2
+
+table: table: 0
+player-4(480/0 + 10) | player-5(480/0 + 10) | player-6(0/480 + 490) | player-7(480/0 + 10) | player-8(480/0 + 10) | player-0(0.0/1110.0 + 1120.0) | player-1(0/405 + 440) | player-2(430/0 + 60) | 
+table: table: 1
+player-13(0/480 + 490) | player-14(480/0 + 10) | player-15(480/0 + 10) | player-16(0/480 + 490) | player-17(480/0 + 10) | player-9(455/0 + 10) | player-18(430/0 + 35) | player-12(1525.0/0.0 + 60.0) | 
+table: table: 2
+player-22(0/480 + 490) | player-23(480/0 + 10) | player-24(480/0 + 10) | player-25(480/0 + 10) | player-26(0/480 + 490) | player-19(0/430 + 440) | player-20(0/455 + 490) | player-21(595.0/0.0 + 60.0) | 
+table: table: 3
+player-31(0/480 + 490) | player-32(0/480 + 490) | player-33(0/480 + 490) | player-34(480/0 + 10) | player-35(480/0 + 10) | player-27(455/0 + 10) | player-28(405/0 + 35) | player-29(1085.0/0.0 + 60.0) | 
+min/max/maxCnt: 8/9/2
+game: 9
+BB: 50, SB: 25, ante: 10, games: 3
+
+table: table: 0
+player-2(0/490 + 500) | player-3(490/0 + 10) | player-4(0/490 + 500) | player-5(490/0 + 10) | player-6(490/0 + 10) | player-7(490/0 + 10) | player-8(490/0 + 10) | player-0(465/0 + 35) | player-1(440/0 + 60) | 
+table: table: 1
+player-11(0/490 + 500) | player-12(490/0 + 10) | player-13(490/0 + 10) | player-14(0/490 + 500) | player-15(490/0 + 10) | player-16(0/490 + 500) | player-17(490/0 + 10) | player-9(465/0 + 35) | player-10(440/0 + 60) | 
+table: table: 2
+player-20(490/0 + 10) | player-21(490/0 + 10) | player-22(0/490 + 500) | player-23(0/490 + 500) | player-24(490/0 + 10) | player-25(490/0 + 10) | player-26(490/0 + 10) | player-18(465/0 + 35) | player-19(440/0 + 60) | 
+table: table: 3
+player-29(490/0 + 10) | player-30(490/0 + 10) | player-31(0/490 + 500) | player-32(490/0 + 10) | player-33(490/0 + 10) | player-34(490/0 + 10) | player-35(490/0 + 10) | player-27(465/0 + 35) | player-28(0/440 + 500) | 
+min/max/maxCnt: 7/8/3
+game: 10
+Finished

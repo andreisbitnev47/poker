@@ -24,6 +24,9 @@ class Player():
     def getTableData(self, key):
         return self.tableData[key]
     
+    def getAllTableData(self):
+        return self.tableData
+    
     def getData(self, key):
         return self.data[key]
     
@@ -44,11 +47,4 @@ class Player():
                 formattedHand[1], #card2
                 formattedHand[2] #suit
                 ]
-        print('reward:' + str(self.tableData["reward"]))
-        print('firstBetPosition: ' + str(0 if firstBetPosition == -1 else firstBetPosition))
-        print('playerPosition: ' + str(playerPosition))
-        print('stackBBs: ' + str(stackBBs))
-        print('card1: ' + str(formattedHand[0]))
-        print('card2: ' + str(formattedHand[1]))
-        print('suit: ' + str(formattedHand[2]))
-        return self.data["bot"].update(self.tableData["reward"], data)
+        return self.data["bot"].update(self.tableData["reward"], data) * self.data["stack"]
