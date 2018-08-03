@@ -13,8 +13,9 @@ class Tournament():
         dqnNr = randint(1, playerCnt)
         logger('DQN - ' + str(dqnNr), 'default')
         players = []
-        self.dqn = Dqn(6,2,0.9)
-        self.dqn.load()
+        #self.dqn = Dqn(6,2,0.9)
+        #self.dqn.load()
+        self.dqn = SimpleBot(1)
         for x in range(playerCnt):
             level = 0 if x == dqnNr else randint(1, 6)
             bot = self.dqn if level == 0 else SimpleBot(level)
@@ -93,7 +94,8 @@ class Tournament():
         return self.dqnResults
     
     def saveDqn(self):
-        self.dqn.save()
+        #self.dqn.save()
+        print('saved')
         
     def rearrangePlayers(self):
         positionRewardMap = [1, 1, 0.9, 0.8, 0.6, 0.4, 0.2]
@@ -278,5 +280,5 @@ class Tournament():
         if self.roundsMap[0]['games'] <= 0:
             del self.roundsMap[0]
 
-tournament = Tournament(36, 9, 500, 1000);
+tournament = Tournament(36, 9, 500, 10);
 tournament.nextRound()

@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
+
 # AI for Self Driving Car
 
 # Importing the libraries
 
 import numpy as np
 import random
-from random import randint
 import os
 import torch
 import torch.nn as nn
@@ -13,7 +14,6 @@ import torch.optim as optim
 import torch.autograd as autograd
 from torch.autograd import Variable
 import sys
-sys.setrecursionlimit(15000)
 
 # Creating the architecture of the Neural Network
 
@@ -50,37 +50,26 @@ class ReplayMemory(object):
 
 # Implementing Deep Q Learning
 
-class Dqn(nn.Module):
+class Dqn():
     
     def __init__(self, input_size, nb_action, gamma):
-        super(Dqn, self).__init__()
-        self.input_size = input_size
-        self.nb_action = nb_action
-        self.fc1 = nn.Linear(input_size, 30)
-        self.fc2 = nn.Linear(30, nb_action)
-        
         self.gamma = gamma
         self.reward_window = []
-        #self.model = Network(input_size, nb_action)
+        self.model = Network(input_size, nb_action)
         self.memory = ReplayMemory(10000)
-        self.optimizer = optim.Adam(self.parameters(), lr = 0.001)
+        self.optimizer = optim.Adam(self.model.parameters(), lr = 0.001)
         self.last_state = torch.Tensor(input_size).unsqueeze(0)
         self.last_action = 0
         self.last_reward = 0
     
-    def forward(self, state):
-        x = F.relu(nn.Linear(6, 30)(state))
-        q_values = nn.Linear(30, 2)(x)
-        return q_values
-    
     def select_action(self, state):
-        probs = F.softmax(self.forward(Variable(state))*10, dim=1) # T=10
+        probs = F.softmax(self.model(Variable(state))*10, dim=1) # T=10
         action = probs.multinomial(2)
         return action.data[0,0]
     
     def learn(self, batch_state, batch_next_state, batch_reward, batch_action):
-        outputs = self.forward(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
-        next_outputs = self.forward(batch_next_state).detach().max(1)[0]
+        outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
+        next_outputs = self.model(batch_next_state).detach().max(1)[0]
         target = self.gamma*next_outputs + batch_reward
         td_loss = F.smooth_l1_loss(outputs, target)
         self.optimizer.zero_grad()
@@ -107,32 +96,40 @@ class Dqn(nn.Module):
         return sum(self.reward_window)/(len(self.reward_window)+1.)
     
     def save(self):
-        torch.save({'state_dict': self.state_dict(),
+        torch.save({'state_dict': self.model.state_dict(),
                     'optimizer' : self.optimizer.state_dict(),
                    }, 'last_brain.pth')
     
     def load(self):
         if os.path.isfile('last_brain.pth'):
             checkpoint = torch.load('last_brain.pth')
-            self.load_state_dict(checkpoint['state_dict'])
+            self.model.load_state_dict(checkpoint['state_dict'])
             self.optimizer.load_state_dict(checkpoint['optimizer'])
 
-def main(reward, firstBetPosition, position, stackBBs, card1, card2, suit):
+brain = Dqn(6,2,0.9)
+brain.load()
+while True:
+    value = input()
+    
+    if value == "q":
+        break
+    elif value == 's':
+        brain.save()
+        print('brain saved')
+    elif value == 'l':
+        brain.load()
+        print('brain loaded')
+    else:
+        inputArr = value.split(",")
+        for index, val in enumerate(inputArr):
+            if index == 0 or index == 3:
+                inputArr[index] = float(val)
+            else:
+                inputArr[index] = int(val)
+        reward = inputArr[0]
+        signal = inputArr[1:7]
+        result = brain.update(reward, signal)
+        print(result)
 
-    brain = Dqn(6,2,0.9)
-    brain.load()
-    move = brain.update(float(reward), [int(firstBetPosition), int(position), float(stackBBs), int(card1), int(card2), int(suit)])
-    data = int(move)
-    brain.save()
-    print(data)
-    sys.stdout.flush()
-
-if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7])
-  
-dqn = Dqn(6,2,0.9)    
-for x in range(10000):
-    reward = randint(-9, 9) / 10
-    signal = [randint(0, 8), randint(0, 8), randint(0, 20) + randint(0, 99) / 100, randint(2, 14), randint(2, 14), randint(0, 1)]
-    print('game - ' + str(x))
-    dqn.update(reward, signal)
+# Exit message.
+print("You quit.")
