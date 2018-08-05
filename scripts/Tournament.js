@@ -1,20 +1,25 @@
 const Player = require('./Player');
 const Table = require('./Table');
 const Dqn = require('./dqn');
-const fs = require('fs');
+const SimpleBot = require('./simpleBot');
 
 module.exports = class Tournament{
     constructor(props) {
         const {playerCnt, playersPerTable, startingChips, maxGames} = props
         const dqnNr = Math.floor(Math.random() * playerCnt);
+        this.dqn = new Dqn();
+        this.timeOut = [];
+        // this.dqn = new SimpleBot(6)
         const players = [...Array(playerCnt)].map((_, index) => {
             const level = index === dqnNr ? 0 : `${Math.floor(Math.random() * 6) + 1}`;
             const brain = level === 0 ? 'DQN' : `BOT-${level}`;
+            const bot = level ? new SimpleBot(level) : this.dqn;
             const data = {
                 id: this.uuid(),
                 index,
                 name: `player-${index}`,
                 stack: startingChips,
+                bot: bot,
                 tableData: {
                     hand: undefined,
                     firstBetPosition: undefined,
@@ -70,6 +75,10 @@ module.exports = class Tournament{
             {'BB': 1000, 'SB': 500, 'ante': 120, 'games': 12},
             {'BB': 1200, 'SB': 600, 'ante': 140, 'games': 12},
             {'BB': 1400, 'SB': 700, 'ante': 160, 'games': 12},
+            {'BB': 1600, 'SB': 800, 'ante': 180, 'games': 12},
+            {'BB': 1800, 'SB': 900, 'ante': 200, 'games': 12},
+            {'BB': 2000, 'SB': 1000, 'ante': 220, 'games': 12},
+            {'BB': 2200, 'SB': 1200, 'ante': 240, 'games': 12},
         ];
     }
     uuid() {
@@ -82,9 +91,16 @@ module.exports = class Tournament{
         this.players.forEach((player) => {
             player.updateTableData({round})
         });
-        Promise.all(this.tables.map(table => table.handleTableUpdate())).then(() => {
-            this.rearrangePlayers();
-        });
+        Promise.all(this.tables.map(table => table.handleTableUpdate()))
+            .then((results) => {
+                if(results.indexOf(false) !== -1) {
+                    this.resetTournament();
+                }
+                this.rearrangePlayers();
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
     async rearrangePlayers() {
         const positionRewardMap = [1, 1, 0.9, 0.8, 0.6, 0.4, 0.2]
@@ -133,6 +149,10 @@ module.exports = class Tournament{
             }
         });
         // distribute all freeplayer between tables
+        const timeOut = setTimeout(function() {
+            console.log('this is it')
+            // this.resetTournament();
+        }, 500)
         while(freePlayers.length > 0) {
           for (let i = 0; i < tables.length; i++) {
             if (tablePlayersMap[i] < minPlayersPerTable || (
@@ -150,6 +170,7 @@ module.exports = class Tournament{
             }
           }
         }
+        clearTimeout(timeOut);
         tables.forEach((table) => {
             table.players = table.players.filter(table => !!table);
         });
@@ -171,24 +192,32 @@ module.exports = class Tournament{
         const dqnLost = !this.activePlayers.find(player => player.index === this.dqnNr);
         if(this.activePlayers.length > 1 && !dqnLost) {
             this.tables.forEach((table) => {
-                table.resetTableData();
+                const tableReset = table.resetTableData();
+                // restart tournament if tableData reset didn't go well
+                if(!tableReset) {
+                    this.resetTournament();
+                }
             });
             this.nextRound();
         } else {
-            const dqn = new Dqn();
             if(dqnLost && this.activePlayers.length > 5) {
-                await dqn.update(-1, [0, 0, 0, 0, 0, 0]);
+                await this.dqn.update(-1, [0, 0, 0, 0, 0, 0]);
             } else if(dqnLost && this.activePlayers.length <= 5) {
-                await dqn.update(positionRewardMap[this.activePlayers.length + 1], [0, 0, 0, 0, 0, 0]);
+                await this.dqn.update(positionRewardMap[this.activePlayers.length + 1], [0, 0, 0, 0, 0, 0]);
                 this.prizes[this.activePlayers.length + 1] += 1;
             } else if (!dqnLost && this.activePlayers.length === 1) {
-                await dqn.update(1, [0, 0, 0, 0, 0, 0]);
+                await this.dqn.update(1, [0, 0, 0, 0, 0, 0]);
                 this.prizes['1'] += 1;
             }
             this.resetTournament();
+            if(this.gameCnt % 1000 == 0) {
+                const saveStatus = await this.dqn.save();
+                console.log(saveStatus);
+                
+            } 
             if(this.gameCnt >= this.maxGames) {
                 console.log('finished');
-                console.log(`prizes: ${this.prizes}, 1-st: ${this.prizes['1']}, cnt: ${Object.keys(this.prizes).reduce((prev, next) => prev + this.prizes[next], 0)}`)
+                console.log(`prizes: ${JSON.stringify(this.prizes)}, 1-st: ${this.prizes['1']}, cnt: ${Object.keys(this.prizes).reduce((prev, next) => prev + this.prizes[next], 0)}`)
             } else {
                 var gameCnt = this.gameCnt;
                 // fs.appendFile('/home/andrei/projects/poker/logs.txt', 'game ' + gameCnt + '\n', function (err) {
@@ -201,16 +230,23 @@ module.exports = class Tournament{
         }
     }
     resetTournament() {
+        clearTimeout(this.timeOut[0]);
+        this.timeOut.splice(0, 1);
+        this.timeOut.push(setTimeout(function(){
+            this.resetTournament();
+        }.bind(this), 1000));
         const {playerCnt, playersPerTable, startingChips} = this;
         const dqnNr = Math.floor(Math.random() * playerCnt);
         const players = [...Array(playerCnt)].map((_, index) => {
             const level = index === dqnNr ? 0 : `${Math.floor(Math.random() * 6) + 1}`;
             const brain = level === 0 ? 'DQN' : `BOT-${level}`;
+            const bot = level ? new SimpleBot(level) : this.dqn;
             const data = {
                 id: this.uuid(),
                 index,
                 name: `player-${index}`,
                 stack: startingChips,
+                bot: bot,
                 tableData: {
                     hand: undefined,
                     firstBetPosition: undefined,
@@ -257,6 +293,10 @@ module.exports = class Tournament{
             {'BB': 1000, 'SB': 500, 'ante': 120, 'games': 12},
             {'BB': 1200, 'SB': 600, 'ante': 140, 'games': 12},
             {'BB': 1400, 'SB': 700, 'ante': 160, 'games': 12},
+            {'BB': 1600, 'SB': 800, 'ante': 180, 'games': 12},
+            {'BB': 1800, 'SB': 900, 'ante': 200, 'games': 12},
+            {'BB': 2000, 'SB': 1000, 'ante': 220, 'games': 12},
+            {'BB': 2200, 'SB': 1200, 'ante': 240, 'games': 12},
         ];
     }
     updateRounds() {

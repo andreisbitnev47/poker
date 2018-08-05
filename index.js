@@ -30,7 +30,7 @@ app.post('/update', (req, res) => {
 });
 
 app.get('/asd', (req, res) => {
-    const tournament = new Tournament({playerCnt: 36, playersPerTable: 9, startingChips: 500, maxGames: 10000});
+    const tournament = new Tournament({playerCnt: 36, playersPerTable: 9, startingChips: 500, maxGames: 100000});
     tournament.nextRound();
     res.end('asd');
 })

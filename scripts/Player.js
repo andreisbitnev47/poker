@@ -7,7 +7,7 @@ module.exports = class Player {
         this.name = props.name;
         this.stack = props.stack;
         this.tableData = props.tableData;
-        this.bot = props.level ? new SimpleBot(props.level) : new Dqn();
+        this.bot = props.bot;
         this.brain = props.brain;
     }
     set(propName, value) {
@@ -27,6 +27,9 @@ module.exports = class Player {
     }
     update() {
         return new Promise((resolve, reject) => {
+            const timeOut = setTimeout(function() {
+                reject();
+            }, 500);
             const {hand, firstBetPositionName, round, position, playersCnt, pot, reward, tournamentPosition} = this.tableData;
             const { player, setNextPlayer, index } = this;
             // const action = Math.floor(Math.random() * 2);
@@ -46,6 +49,7 @@ module.exports = class Player {
             ];
             
             this.bot.update(reward, data).then((action) => {
+                clearTimeout(timeOut);
                 resolve(this.stack * action);
             });
         });

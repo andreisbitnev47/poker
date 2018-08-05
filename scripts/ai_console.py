@@ -14,6 +14,7 @@ import torch.optim as optim
 import torch.autograd as autograd
 from torch.autograd import Variable
 import sys
+import json
 
 # Creating the architecture of the Neural Network
 
@@ -63,7 +64,7 @@ class Dqn():
         self.last_reward = 0
     
     def select_action(self, state):
-        probs = F.softmax(self.model(Variable(state))*10, dim=1) # T=10
+        probs = F.softmax(self.model(Variable(state))*100, dim=1) # T=10
         action = probs.multinomial(2)
         return action.data[0,0]
     
@@ -108,28 +109,44 @@ class Dqn():
 
 brain = Dqn(6,2,0.9)
 brain.load()
-while True:
-    value = input()
+import socket
+
+localIP     = "127.0.0.1"
+localPort   = 44444
+bufferSize  = 1024
+
+msgFromServer       = "Hello UDP Client"
+bytesToSend         = str.encode(msgFromServer)
+
+UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+UDPServerSocket.bind((localIP, localPort))
+print("UDP server up and listening")
+
+# Listen for incoming datagrams
+while(True):
+    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+    message = bytesAddressPair[0]
+    address = bytesAddressPair[1]
+    clientMsg = message.decode('utf-8')
+    print(clientMsg)
+    # Sending a reply to client
+    # UDPServerSocket.sendto(bytesToSend, address)
     
-    if value == "q":
-        break
-    elif value == 's':
+    if format(clientMsg) == 'save':
         brain.save()
         print('brain saved')
-    elif value == 'l':
+        response = 'brain saved'
+    elif format(clientMsg) == 'load':
         brain.load()
         print('brain loaded')
+        response = 'brain loaded'
     else:
-        inputArr = value.split(",")
-        for index, val in enumerate(inputArr):
-            if index == 0 or index == 3:
-                inputArr[index] = float(val)
-            else:
-                inputArr[index] = int(val)
-        reward = inputArr[0]
-        signal = inputArr[1:7]
-        result = brain.update(reward, signal)
-        print(result)
-
-# Exit message.
-print("You quit.")
+        messageArray = json.loads(format(clientMsg))
+        response = str(brain.update(messageArray[0], messageArray[1:7]))
+        print(response)
+        
+    bytesToSend = str.encode(response)
+    serverAddressPort = ("127.0.0.1", 33333)
+    bufferSize = 1024
+    UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPClientSocket.sendto(bytesToSend, serverAddressPort)

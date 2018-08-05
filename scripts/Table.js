@@ -44,9 +44,13 @@ class Table {
     }
 
     handleTableUpdate() {
+        const timeOut = setTimeout(function() {
+            reject();
+        }, 500);
         return new Promise((resolve, reject) => {
             this.takeBlinds();
             this.giveCards();
+            clearTimeout(timeOut);
             resolve(this.playerTurn());
         });
     }
@@ -119,11 +123,15 @@ class Table {
     resetTableData() {
         const players = this.players;
         if(players.length <= 1) {
-            return
+            return false
         }
         this.sbPlayer = this.sbPlayer < players.length ? this.sbPlayer + 1 : 0;
         this.pot = Array(players.length).fill(0);
         this.firstBetPosition = undefined;
+        // if player doesn't have updateTableData reset tournament
+        if(players.find(player => !player.updateTableData)) {
+            return false
+        }
         players.forEach((player, index) => {
             player.updateTableData({
                 position: this.givePosition(index, this.sbPlayer, players.length),
@@ -133,10 +141,14 @@ class Table {
                 round: undefined,
             })
         });
+        return true;
     }
 
     playerTurn() {
         return new Promise((resolve, reject) => {
+            const timeOut = setTimeout(function() {
+                reject();
+            }, 500);
             const players = this.players
             let {firstBetPosition, pot} = this;
             const positionTurnsMap = {
@@ -155,7 +167,8 @@ class Table {
             const firstBetPositionName = positionTurnsMap[players.length.toString()][firstBetPosition];
             
             if(!activePlayer) {
-                console.log('asd');
+                clearTimeout(timeOut);
+                resolve(false)
             }
             activePlayer.updateTableData({
                 firstBetPositionName
@@ -177,8 +190,10 @@ class Table {
                 if (this.activePosition >= players.length) {
                     this.activePosition = 0
                     this.distributePot();
-                    resolve();
+                    clearTimeout(timeOut);
+                    resolve(true);
                 } else {
+                    clearTimeout(timeOut);
                     resolve(this.playerTurn());
                 }
             });
@@ -212,6 +227,10 @@ class Table {
             hands,
             winners,
         }
+        const timeOut = setTimeout(function() {
+            console.log('this is it')
+            // this.resetTournament();
+        }, 500);
         while (hands.length) {
             places.push(Hand.winners(hands).map(winner => winner.index));
             handNames.push(Hand.winners(hands).map(winner => winner.descr));
@@ -219,6 +238,7 @@ class Table {
                 hands = hands.filter(hand => hand.index != place);
             });
         }
+        clearTimeout(timeOut);
         places.forEach((place) => {
             place.sort((a, b) => pot[a] - pot[b]);
             for(let i = 0; i < pot.length; i++) {

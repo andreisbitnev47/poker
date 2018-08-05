@@ -19,6 +19,9 @@ module.exports = class SimpleBot{
         const suit = card1 === card2 ? 'p' : suits[suitNr];
         return [card1, card2, suit];
     }
+    save() {
+        console.log('simple bot save')
+    }
     update(reward, data) {
         return new Promise((resolve, reject) => {
             const positionsMap = [null, 'UTG', 'UTG+1', 'UTG+2', 'MP1', 'MP2', 'C', 'B', 'SB', 'BB'];

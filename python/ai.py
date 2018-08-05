@@ -129,10 +129,3 @@ def main(reward, firstBetPosition, position, stackBBs, card1, card2, suit):
 
 if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7])
-  
-dqn = Dqn(6,2,0.9)    
-for x in range(10000):
-    reward = randint(-9, 9) / 10
-    signal = [randint(0, 8), randint(0, 8), randint(0, 20) + randint(0, 99) / 100, randint(2, 14), randint(2, 14), randint(0, 1)]
-    print('game - ' + str(x))
-    dqn.update(reward, signal)
